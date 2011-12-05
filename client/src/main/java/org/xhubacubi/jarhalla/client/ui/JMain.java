@@ -11,8 +11,15 @@ import javax.swing.JFrame;
  * @author rugi
  */
 public class JMain extends JFrame {
- public JMain(){
-     super();
- }   
- 
+
+    
+    public JMain() {
+        super();
+        initComponents();
+    }
+    
+    public void initComponents(){
+    
+    }
+    
 }
