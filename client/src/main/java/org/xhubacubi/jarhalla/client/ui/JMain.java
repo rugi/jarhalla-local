@@ -5,13 +5,12 @@
 package org.xhubacubi.jarhalla.client.ui;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
+import org.xhubacubi.jarhalla.client.ui.components.JLabelInput;
 import org.xhubacubi.jarhalla.client.ui.components.StatusBar;
 
 /**
@@ -25,6 +24,7 @@ public class JMain extends JFrame {
     private JMenu mExit;
     private JMenuItem mIExit;
     private StatusBar status;
+    private JTabbedPane tabbed;
 
     public JMain() {
         super();
@@ -55,9 +55,103 @@ public class JMain extends JFrame {
         this.setJMenuBar(menuBar);
         //luego el statusbar
         status = new StatusBar();
+        //El tab superior
+        tabbed = new JTabbedPane();        
+        //Por ahora simulamos la tabla:
+        String[] columnNames = {"Jar",
+            "Class",
+            "Path",
+            "Jar Size",
+            "Jar LastModif"};
+        Object[][] data = {
+            {"uno.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"dos.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"tres.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"cuatro.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"cinco.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"uno.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"dos.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"tres.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"cuatro.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"cinco.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"uno.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"dos.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"tres.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"cuatro.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"cinco.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"uno.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"dos.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"tres.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"cuatro.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"cinco.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"uno.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"dos.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"tres.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"cuatro.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"cinco.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"uno.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"dos.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"tres.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"},
+            {"cuatro.jar", "org.com.algo.class",
+                "/tmp", new Integer(2342342), "11/11/2011"},
+            {"cinco.jar", "org.com.algo.class",
+                "/tmp", new Integer(234234), "11/11/2011"}            
+        };
+        JTable table = new JTable(data, columnNames);
+        JScrollPane scroll =  new JScrollPane(table);
+        //Antes de agregar el tab, lo llenamos
+        JPanel tabPanel = new JPanel(new GridLayout(0,1)); 
+                //Create the radio buttons.
+        JRadioButton jardButton = new JRadioButton("Jar");
+        jardButton.setMnemonic(KeyEvent.VK_J); 
+        JRadioButton clasButton = new JRadioButton("Class");
+        clasButton.setMnemonic(KeyEvent.VK_C);
+        ButtonGroup group = new ButtonGroup();
+        group.add(jardButton);
+        group.add(clasButton);        
+        JPanel radioPanel = new JPanel();
+        radioPanel.add(jardButton);
+        radioPanel.add(clasButton);        
 
+        tabPanel.add(radioPanel);
+        tabPanel.add(new JLabelInput("Buscar","Jar o clase a buscar"));
+        String[] repos = { "/tmp", "/extras/1", "prov/s7/" };
+        tabPanel.add(new JComboBox(repos));
+        tabPanel.add(new JButton("Buscar"));
+        tabbed.add("Buscar:", tabPanel);       
+        //---
         //Y ahora el layout.
         this.setLayout(new BorderLayout());
+        this.add(tabbed, BorderLayout.NORTH);
+        this.add(scroll, BorderLayout.CENTER);
         this.add(status, BorderLayout.SOUTH);
     }
 }

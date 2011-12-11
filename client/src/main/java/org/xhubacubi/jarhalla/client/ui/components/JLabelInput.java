@@ -36,13 +36,16 @@ public class JLabelInput extends JPanel {
             JLabel label,
             JTextField input) {
         super();
+        this.layout = layout;
+        this.label = label;
+        this.input = input;
         initComponents();
     }
 
     private void initComponents() {
         this.setLayout(layout);
         this.add(label,BorderLayout.WEST);
-        this.add(input,BorderLayout.EAST);
+        this.add(input,BorderLayout.CENTER);
         this.validate();        
     }
 }
