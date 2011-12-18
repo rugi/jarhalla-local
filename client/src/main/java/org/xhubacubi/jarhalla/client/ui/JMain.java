@@ -32,6 +32,7 @@ public class JMain extends JFrame {
     }
 
     public void initComponents() {
+                                    
         //primero el menu
         mIExit = new JMenuItem("Exit",
                 KeyEvent.VK_E);
