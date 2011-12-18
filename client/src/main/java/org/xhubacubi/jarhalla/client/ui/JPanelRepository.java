@@ -7,12 +7,18 @@ package org.xhubacubi.jarhalla.client.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import org.xhubacubi.alicante.core.SearchFilesUtil;
+import org.xhubacubi.alicante.core.jar.JarUtil;
 import org.xhubacubi.jarhalla.client.ui.components.JLabelFileChooser;
 
 /**
@@ -36,6 +42,7 @@ public class JPanelRepository extends JPanel {
     private JPanel panelSelect;
     private JButton buttonSearch;
     private JLabelFileChooser chooserDir;
+
     public JPanelRepository() {
         super();
         initComponents();
@@ -92,14 +99,15 @@ public class JPanelRepository extends JPanel {
         titleDir = BorderFactory.createTitledBorder(
                 loweredetched, "Directorio:");
         titleLog = BorderFactory.createTitledBorder(
-                loweredetched, "Salida:");        
+                loweredetched, "Salida:");
         panelSelect = new JPanel();
         panelSelect.setLayout(new BorderLayout());
         //panelSelect.add(directory, BorderLayout.CENTER);
         panelSelect.add(chooserDir, BorderLayout.CENTER);
-                              
-        
-        buttonSearch= new JButton("Buscar");        
+
+
+        buttonSearch = new JButton("Buscar");
+        buttonSearch.addActionListener(new SearchListener());
         panelSelect.add(buttonSearch, BorderLayout.SOUTH);
         panelSelect.setBorder(titleDir);
         // panel Details
@@ -123,4 +131,90 @@ public class JPanelRepository extends JPanel {
         title.setTitleJustification(TitledBorder.LEFT);
         this.setBorder(title);
     }
+
+    class SearchListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            String dir = chooserDir.getDirectory();
+            if (dir.length() == 0) {
+                JOptionPane.showMessageDialog(null, "Debe inficar un directorio.");
+                return;
+            }
+            // Directorio contiene algo.
+            if (!new File(dir).isDirectory()) {
+                JOptionPane.showMessageDialog(null, "Debe inficar un directorio válido.");
+                return;
+            }
+            //Hasta aqui todo ok, tenemos directorio vàlido.
+            SearchJarThread sjt = new SearchJarThread(dir, "(.*?).jar");
+            (new Thread(sjt)).start();
+        }
+    }
+
+    //class
+    class SearchJarThread implements Runnable {
+
+        private int totalJars;
+        private String path;
+        private String pattern;
+
+        public SearchJarThread(String path, String pattern) {
+            super();
+            this.path = path;
+            this.pattern = pattern;
+        }
+
+        @Override
+        public void run() {
+            try {
+                progress.setIndeterminate(true);
+                setTotalJars(0);
+                SearchFilesUtil sfu = new SearchFilesUtil();
+                List<String> jarsPath = sfu.getPathFilesInFolder(this.path, this.pattern);
+                setTotalJars(jarsPath != null ? jarsPath.size() : 0);
+                progress.setIndeterminate(false);
+                System.out.println("Total de jars encontrados " + getTotalJars());
+                if (getTotalJars() > 0) {
+                    progress.setMinimum(0);
+                    progress.setMaximum(getTotalJars());
+                    
+                    int k = 0;
+                    Iterator<String> pathI = jarsPath.iterator();
+                    StringBuilder pathS = new StringBuilder();
+                    while(pathI.hasNext()){
+                        k++;
+                        pathS.delete(0, pathS.length());
+                        pathS.append(pathI.next());
+                        System.out.println("Analizando " + pathS.toString());
+                        JarUtil ju = new JarUtil(pathS.toString());     
+                        List<String> clazz = ju.getClassInside();
+                        System.out.println("Total de clases encontradas "+ clazz.size());
+                        progress.setValue(k);
+                        ju = null;                        
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontraon JARs.");
+                    return;
+                }            
+            } catch (IOException ex) {
+                Logger.getLogger(JPanelRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }//run
+
+        /**
+         * @return the totalJars
+         */
+        public int getTotalJars() {
+            return totalJars;
+        }
+
+        /**
+         * @param totalJars the totalJars to set
+         */
+        public void setTotalJars(int totalJars) {
+            this.totalJars = totalJars;
+        }
+    }
+    //class
 }
