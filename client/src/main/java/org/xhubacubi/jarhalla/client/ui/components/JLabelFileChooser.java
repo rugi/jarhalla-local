@@ -60,8 +60,18 @@ public class JLabelFileChooser extends JPanel {
         this.add(button, BorderLayout.EAST);
         this.validate();
     }
-    
-    public String getDirectory(){
-        return this.input.getText()==null?"":this.input.getText().trim();
+
+    public String getDirectory() {
+        return this.input.getText() == null ? "" : this.input.getText().trim();
+    }
+
+    public void enabledComponents() {
+        this.input.setEnabled(true);
+        this.button.setEnabled(true);
+    }
+
+    public void disabledComponents() {
+        this.input.setEnabled(false);
+        this.button.setEnabled(false);
     }
 }

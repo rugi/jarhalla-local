@@ -47,6 +47,7 @@ public class JPanelRepository extends JPanel {
         super();
         initComponents();
     }
+    
 
     public void initComponents() {
         this.setLayout(new BorderLayout());
@@ -151,6 +152,18 @@ public class JPanelRepository extends JPanel {
             (new Thread(sjt)).start();
         }
     }
+    
+    private void disabledPanels(){
+        this.listRepos.setEnabled(false);
+        this.buttonSearch.setEnabled(false);
+        this.chooserDir.disabledComponents();                
+    }
+    
+    private void enabledPanels(){
+        this.listRepos.setEnabled(true);
+        this.buttonSearch.setEnabled(true);
+        this.chooserDir.enabledComponents();                
+    }    
 
     //class
     class SearchJarThread implements Runnable {
@@ -168,6 +181,7 @@ public class JPanelRepository extends JPanel {
         @Override
         public void run() {
             try {
+                disabledPanels();
                 progress.setIndeterminate(true);
                 setTotalJars(0);
                 SearchFilesUtil sfu = new SearchFilesUtil();
@@ -175,31 +189,43 @@ public class JPanelRepository extends JPanel {
                 setTotalJars(jarsPath != null ? jarsPath.size() : 0);
                 progress.setIndeterminate(false);
                 System.out.println("Total de jars encontrados " + getTotalJars());
+                log.append("Total de jars encontrados " + getTotalJars());
+                log.append("\n");
                 if (getTotalJars() > 0) {
                     progress.setMinimum(0);
                     progress.setMaximum(getTotalJars());
-                    
+
                     int k = 0;
                     Iterator<String> pathI = jarsPath.iterator();
                     StringBuilder pathS = new StringBuilder();
-                    while(pathI.hasNext()){
+                    while (pathI.hasNext()) {
                         k++;
                         pathS.delete(0, pathS.length());
                         pathS.append(pathI.next());
                         System.out.println("Analizando " + pathS.toString());
-                        JarUtil ju = new JarUtil(pathS.toString());     
+                        log.append("Analizando "+ k+" de "+ getTotalJars());
+                        log.append("\n");
+                        log.append("\t"+ pathS.toString());
+                        log.append("\n");
+
+                        JarUtil ju = new JarUtil(pathS.toString());
                         List<String> clazz = ju.getClassInside();
-                        System.out.println("Total de clases encontradas "+ clazz.size());
+                        log.append("\t\t Total de clases encontradas " + clazz.size());
+                        log.append("\n");
+
                         progress.setValue(k);
-                        ju = null;                        
+                        ju = null;
                     }
+                    log.append("Analisis concluido"); 
+                    log.append("\n");
                 } else {
                     JOptionPane.showMessageDialog(null, "No se encontraon JARs.");
                     return;
-                }            
+                }
             } catch (IOException ex) {
                 Logger.getLogger(JPanelRepository.class.getName()).log(Level.SEVERE, null, ex);
             }
+             enabledPanels();
         }//run
 
         /**
