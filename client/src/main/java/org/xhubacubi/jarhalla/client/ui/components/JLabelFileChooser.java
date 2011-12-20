@@ -48,8 +48,8 @@ public class JLabelFileChooser extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    input.setText(chooser.getCurrentDirectory().getAbsolutePath());
+                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {                    
+                    input.setText(chooser.getSelectedFile().getAbsolutePath());
                 } else {
                     //
                 }
