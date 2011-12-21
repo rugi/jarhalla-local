@@ -4,12 +4,17 @@
  */
 package org.xhubacubi.jarhalla.client.dao;
 
+import java.util.List;
+
 /**
  *
  * @author rugi
  */
 public interface IRepositoryDao {
-   
-    public boolean addRepo(byte id, String path);
-    public boolean deleteRepo(byte id);
+
+    public boolean addRepo(String path);
+
+    public boolean deleteRepo(String path);
+
+    public List<String> getListRepo(String path);
 }
