@@ -11,13 +11,6 @@ package org.xhubacubi.jarhalla.client.services;
 public class DemiurgoFacade {
 
     private static DemiurgoFacade instance;
-
-    /**
-     * @param aInstance the instance to set
-     */
-    public static void setInstance(DemiurgoFacade aInstance) {
-        instance = aInstance;
-    }
     private ServicePrimus service;
 
     private DemiurgoFacade() {
