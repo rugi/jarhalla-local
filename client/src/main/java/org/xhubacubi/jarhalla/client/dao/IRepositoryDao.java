@@ -5,6 +5,7 @@
 package org.xhubacubi.jarhalla.client.dao;
 
 import java.util.List;
+import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 
 /**
  *
@@ -16,5 +17,7 @@ public interface IRepositoryDao {
 
     public boolean deleteRepo(String path);
 
-    public List<String> getListRepo(String path);
+    public List<Repo> getListRepo(String path);
+
+    public boolean existRepo(String path);
 }
