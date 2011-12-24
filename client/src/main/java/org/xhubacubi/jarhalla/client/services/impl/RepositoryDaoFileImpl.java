@@ -25,14 +25,22 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
     }
 
     @Override
-    public boolean addRepo(String path) {
+    public String addRepo(String path) {
         boolean res = false;
         String fileT = FileUtil.getWorkDirectory() + File.separatorChar + nameFile;
-        boolean ready = existOrCreate(fileT);
-        if (ready) {
-            appendFile(fileT, path);
+        boolean ready = FileUtil.existOrCreate(fileT);
+        //Solo nos hace falta sacar el id.
+        List<Repo> r = getListRepo();
+        String idRepo;        
+        if(r.size()>0){
+            idRepo = ""+(Integer.parseInt(r.get(r.size()-1).getId())+1);
+        }else{
+            idRepo="1";
         }
-        return res;
+        if (ready) {
+            FileUtil.appendFile(fileT, idRepo+"|"+path);
+        }
+        return idRepo;
 
     }
 
@@ -44,13 +52,19 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
     @Override
     public List<Repo> getListRepo() {
         List<Repo> res = new ArrayList();
-        List<String> l = getListFromFileWithPatter(FileUtil.
+        List<String> l = FileUtil.getListFromFileWithPatter(FileUtil.
                 getWorkDirectory() + 
                 File.separatorChar + nameFile, null);
         if(l!=null){
             Iterator it = l.iterator();            
+            StringBuilder line = new StringBuilder();
             while(it.hasNext()){
-                res.add(new Repo(it.next().toString()));
+                line.delete(0,line.length());
+                line.append(it.next().toString());
+                System.out.println("numero de tokens"+line.toString().split("\\|").length);
+                if(line.toString().split("\\|").length>=2){
+                    res.add(new Repo(line.toString().split("\\|")[0], line.toString().split("\\|")[1] ));
+                }
             }
         }
         return res;
@@ -61,57 +75,5 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    private boolean existOrCreate(String fileName) {
-        String dirTarger = fileName;
-        File temp = new File(dirTarger);
-        boolean res = false;
-        if (!temp.exists()) {
-            try {
-                res = temp.createNewFile();
-            } catch (IOException ex) {
-                res = false;
-            }
-        }
-        return res;
-    }
 
-    private static boolean appendFile(String fileName, String line) {
-        boolean res = true;
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
-            out.write(line);
-            out.close();
-        } catch (IOException e) {
-            res = false;
-        }
-        return res;
-    }
-
-    /**
-     * Metodo que devuelve una lista de Strings dentro de un archivo
-     * siempre que cumplan con el patron indicado.
-     * Si es patron es = null, devuelve todas las lineas del archivo
-     * @param fileName nombre del archivo
-     * @param pattern patron de texto.
-     * @return 
-     */
-    private List<String> getListFromFileWithPatter(String fileName, String pattern) {
-        List<String> r = new ArrayList();
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(fileName));
-            String str;
-            while ((str = in.readLine()) != null) {
-                 if(pattern==null||pattern.trim().length()==0){
-                     r.add(str);
-                 }else{
-                     //se evalua el patron
-                 }
-            }
-            in.close();
-        } catch (IOException e) {
-            //
-            
-        }
-        return r;
-    }
 }

@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface IClassDao {
 
-    public boolean addClass(String path, String nameJar, String clazz);
+    public boolean addClass(String idRepo, String nameJar, String clazz);
 
-    public boolean deleteClassByPathAndNameJar(String path, String nameJar);
+    public boolean deleteClassByPathAndNameJar(String idRepo, String nameJar);
 
-    public List<String> getListClassByPathAndNameJar(String path, String nameJar);
+    public List<String> getListClassByPathAndNameJar(String idRepo, String nameJar);
 }

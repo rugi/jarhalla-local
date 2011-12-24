@@ -161,7 +161,8 @@ public class JPanelRepository extends JPanel {
                 log.append("Total de jars encontrados " + getTotalJars());
                 log.append("\n");
                 if (getTotalJars() > 0) {
-                    // si encontro jars, se graba el repositorio
+                    //TODO falta validar repositorio existents
+                    // si encontro jars, se crea el repositorio
                     DemiurgoFacade.getInstance().getService().addRepo(this.path);
                     progress.setMinimum(0);
                     progress.setMaximum(getTotalJars());

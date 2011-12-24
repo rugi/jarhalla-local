@@ -13,7 +13,7 @@ import org.xhubacubi.jarhalla.client.dao.bean.Repo;
  */
 public interface IRepositoryDao {
 
-    public boolean addRepo(String path);
+    public String addRepo(String path);
 
     public boolean deleteRepo(String path);
 

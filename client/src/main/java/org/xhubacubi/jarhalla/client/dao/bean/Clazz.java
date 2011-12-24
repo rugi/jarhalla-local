@@ -10,7 +10,7 @@ package org.xhubacubi.jarhalla.client.dao.bean;
  */
 public class Clazz {
 
-    private String path;
+    private String idRepo;
     private String jarName;
     private String className;
 
@@ -18,19 +18,7 @@ public class Clazz {
     public Clazz(){
         super();
     }
-    /**
-     * @return the path
-     */
-    public String getPath() {
-        return path;
-    }
 
-    /**
-     * @param path the path to set
-     */
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     /**
      * @return the jarName
@@ -58,5 +46,19 @@ public class Clazz {
      */
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    /**
+     * @return the idRepo
+     */
+    public String getIdRepo() {
+        return idRepo;
+    }
+
+    /**
+     * @param idRepo the idRepo to set
+     */
+    public void setIdRepo(String idRepo) {
+        this.idRepo = idRepo;
     }
 }

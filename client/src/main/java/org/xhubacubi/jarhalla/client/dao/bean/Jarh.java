@@ -9,27 +9,15 @@ package org.xhubacubi.jarhalla.client.dao.bean;
  * @author rugi
  */
 public class Jarh {
-  private String path;
+  private String idRepo;
   private String jarName;
-  private long size;
+  private int size;
   private long dateLastModif;
 
   public Jarh(){
     super();
   }
-    /**
-     * @return the path
-     */
-    public String getPath() {
-        return path;
-    }
 
-    /**
-     * @param path the path to set
-     */
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     /**
      * @return the jarName
@@ -48,14 +36,14 @@ public class Jarh {
     /**
      * @return the size
      */
-    public long getSize() {
+    public int getSize() {
         return size;
     }
 
     /**
      * @param size the size to set
      */
-    public void setSize(long size) {
+    public void setSize(int size) {
         this.size = size;
     }
 
@@ -71,5 +59,19 @@ public class Jarh {
      */
     public void setDateLastModif(long dateLastModif) {
         this.dateLastModif = dateLastModif;
+    }
+
+    /**
+     * @return the idRepo
+     */
+    public String getIdRepo() {
+        return idRepo;
+    }
+
+    /**
+     * @param idRepo the idRepo to set
+     */
+    public void setIdRepo(String idRepo) {
+        this.idRepo = idRepo;
     }
 }
