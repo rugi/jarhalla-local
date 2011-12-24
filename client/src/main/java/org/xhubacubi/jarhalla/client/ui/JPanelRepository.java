@@ -185,14 +185,21 @@ public class JPanelRepository extends JPanel {
                         
                         //se van grabando los jars
                         String nameJar = new File(pathS.toString()).getName();
-                        DemiurgoFacade.getInstance().getService().addJar(idRepo,
+                        String pathJar = pathS.toString().substring(0, pathS.toString().length()-nameJar.length());
+                        DemiurgoFacade.getInstance().getService().
+                                addJar(idRepo,
+                                pathJar,
                                 nameJar, 
                                 ju.getSize(), ju.getLastModif());                        
                         List<String> clazz =  ju.getClassInside();
                         log.append("\t\t Total de clases encontradas " + clazz.size());
                         log.append("\n");
                         // se graban las clases
-                        DemiurgoFacade.getInstance().getService().addClass(idRepo, nameJar, clazz);
+                        DemiurgoFacade.getInstance().getService().
+                                addClass(idRepo,
+                                pathJar, 
+                                nameJar, 
+                                clazz);
                         progress.setValue(k);
                         ju = null;
                     }

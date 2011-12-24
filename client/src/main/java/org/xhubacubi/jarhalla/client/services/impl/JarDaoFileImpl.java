@@ -19,13 +19,13 @@ public class JarDaoFileImpl implements IJarDao {
     private static final String nameFile = "repo_$ID$_jars.jiva";
 
     @Override
-    public boolean addJar(String idRepo, String pathJar, int size, long lastModif) {
+    public boolean addJar(String idRepo, String pathJar, String nameJar,int size, long lastModif) {
         String fileT =  FileUtil.getWorkDirectory() + 
                         File.separatorChar + 
                         FileUtil.generateNameFile(nameFile, idRepo,"$ID$");        
         boolean ready = FileUtil.existOrCreate(fileT);
         if(ready){
-             FileUtil.appendFile(fileT, idRepo+"|"+pathJar+"|"+size+"|"+lastModif);
+             FileUtil.appendFile(fileT, idRepo+"|"+pathJar+"|"+nameJar+"|"+size+"|"+lastModif);
         }else{
             throw new RuntimeException("No se pudo crear el archido de almacenamiento");
         }

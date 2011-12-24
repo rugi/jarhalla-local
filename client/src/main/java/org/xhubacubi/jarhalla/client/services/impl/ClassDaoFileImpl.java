@@ -20,7 +20,7 @@ public class ClassDaoFileImpl implements IClassDao {
     private static final String nameFile = "repo_$ID$_class.jiva";
 
     @Override
-    public boolean addClass(String idRepo, String nameJar, List<String> items) {
+    public boolean addClass(String idRepo,String pathJar , String nameJar, List<String> items) {
         String fileT = FileUtil.getWorkDirectory()
                 + File.separatorChar
                 + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
@@ -29,7 +29,7 @@ public class ClassDaoFileImpl implements IClassDao {
             List<Object> target = new ArrayList<Object>();
             Iterator it = items.iterator();
             while (it.hasNext()) {
-                target.add(idRepo + "|" + nameJar + "|" + it.next().toString().replace("/", "."));
+                target.add(idRepo + "|"+pathJar+"|" + nameJar + "|" + it.next().toString().replace("/", "."));
             }
             FileUtil.appendFile(fileT, target);
         } else {
@@ -39,7 +39,7 @@ public class ClassDaoFileImpl implements IClassDao {
     }
 
     @Override
-    public boolean addClass(String idRepo, String nameJar, String clazz) {
+    public boolean addClass(String idRepo,String pathJar , String nameJar, String clazz) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

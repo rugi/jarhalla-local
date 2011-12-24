@@ -26,7 +26,10 @@ public class JMain extends JFrame {
     private JMenuItem mIExit;
     private StatusBar status;
     private JTabbedPane tabbed;
-
+    private DefaultComboBoxModel comboRepoModel;
+    private JComboBox comboRepo;
+    private JButton buttonSearch;
+    
     public JMain() {
         super();
         initComponents();
@@ -133,7 +136,7 @@ public class JMain extends JFrame {
         //Antes de agregar el tab, lo llenamos
         JPanel tabPanel = new JPanel(new GridLayout(0,1)); 
                 //Create the radio buttons.
-        JRadioButton jardButton = new JRadioButton("Jar");
+        JRadioButton jardButton = new JRadioButton("Jar");        
         jardButton.setMnemonic(KeyEvent.VK_J); 
         JRadioButton clasButton = new JRadioButton("Class");
         clasButton.setMnemonic(KeyEvent.VK_C);
@@ -146,9 +149,24 @@ public class JMain extends JFrame {
 
         tabPanel.add(radioPanel);
         tabPanel.add(new JLabelInput("Buscar","Jar o clase a buscar"));
+         comboRepoModel = new DefaultComboBoxModel();
+         
         Object[] repos =  DemiurgoFacade.getInstance().getService().getListRepo().toArray();
-        tabPanel.add(new JComboBox(repos));
-        tabPanel.add(new JButton("Buscar"));
+        for(int k = 0;k<repos.length;k++){
+            comboRepoModel.addElement(repos[k]);
+        }
+        this.comboRepo = new JComboBox(comboRepoModel);
+        
+        tabPanel.add(comboRepo);
+        buttonSearch = new JButton("Buscar"); 
+        buttonSearch.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                System.out.println("El repositorio seleccionado es:"+comboRepoModel.getSelectedItem());
+            }
+        });
+        tabPanel.add(buttonSearch);
         tabbed.add("Buscar:", tabPanel);       
         //---
         //Y ahora el layout.

@@ -13,7 +13,7 @@ import org.xhubacubi.jarhalla.client.dao.bean.Jarh;
  */
 public interface IJarDao {
 
-    public boolean addJar(String idRepo, String pathJar, int size, long lastModif);
+    public boolean addJar(String idRepo, String pathJar, String nameJar,int size, long lastModif);
 
     public boolean deleteJarByRepo(String idRepo);
     
