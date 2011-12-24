@@ -13,6 +13,7 @@ import java.util.List;
 public interface IClassDao {
 
     public boolean addClass(String idRepo, String nameJar, String clazz);
+    public boolean addClass(String idRepo, String nameJar, List<String> items);
 
     public boolean deleteClassByPathAndNameJar(String idRepo, String nameJar);
 

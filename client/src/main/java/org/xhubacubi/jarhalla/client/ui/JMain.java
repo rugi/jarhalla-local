@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
+import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.ui.components.JLabelInput;
 import org.xhubacubi.jarhalla.client.ui.components.StatusBar;
 
@@ -127,6 +128,7 @@ public class JMain extends JFrame {
                 "/tmp", new Integer(234234), "11/11/2011"}            
         };
         JTable table = new JTable(data, columnNames);
+        
         JScrollPane scroll =  new JScrollPane(table);
         //Antes de agregar el tab, lo llenamos
         JPanel tabPanel = new JPanel(new GridLayout(0,1)); 
@@ -144,7 +146,7 @@ public class JMain extends JFrame {
 
         tabPanel.add(radioPanel);
         tabPanel.add(new JLabelInput("Buscar","Jar o clase a buscar"));
-        String[] repos = { "/tmp", "/extras/1", "prov/s7/" };
+        Object[] repos =  DemiurgoFacade.getInstance().getService().getListRepo().toArray();
         tabPanel.add(new JComboBox(repos));
         tabPanel.add(new JButton("Buscar"));
         tabbed.add("Buscar:", tabPanel);       

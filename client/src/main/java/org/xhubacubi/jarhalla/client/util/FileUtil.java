@@ -6,6 +6,7 @@ package org.xhubacubi.jarhalla.client.util;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -63,6 +64,22 @@ public class FileUtil {
         return res;
     }
 
+    public static boolean appendFile(String fileName, List<Object> lines) {
+        boolean res = true;
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true));
+            Iterator it = lines.iterator();
+            while(it.hasNext()){
+                out.write(it.next().toString());
+                out.write("\n");            
+            }
+            out.close();
+        } catch (IOException e) {
+            res = false;
+        }
+        return res;
+    }    
+    
     /**
      * Metodo que devuelve una lista de Strings dentro de un archivo
      * siempre que cumplan con el patron indicado.
@@ -89,4 +106,8 @@ public class FileUtil {
         }
         return r;
     }
+    
+    public static String generateNameFile(String nameFile, String idRepo, String sufix) {
+        return nameFile.replace(sufix, idRepo);
+    }    
 }

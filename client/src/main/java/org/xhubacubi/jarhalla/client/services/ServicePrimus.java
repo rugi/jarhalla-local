@@ -44,8 +44,8 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
     }
 
     @Override
-    public boolean addJar(String idRepo, String nameJar, int size, long lastModif) {
-        return  this.jar.addJar(idRepo, nameJar, size, lastModif);
+    public boolean addJar(String idRepo, String pathJar, int size, long lastModif) {
+        return  this.jar.addJar(idRepo, pathJar, size, lastModif);
     }
 
     @Override
@@ -83,5 +83,10 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
     @Override
     public List<Repo> getListRepo() {
         return  this.repo.getListRepo();
+    }
+
+    @Override
+    public boolean addClass(String idRepo, String nameJar, List<String> items) {
+        return clazz.addClass(idRepo, nameJar, items);
     }
 }

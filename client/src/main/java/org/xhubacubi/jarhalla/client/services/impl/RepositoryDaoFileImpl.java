@@ -4,7 +4,7 @@
  */
 package org.xhubacubi.jarhalla.client.services.impl;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,8 +25,7 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
     }
 
     @Override
-    public String addRepo(String path) {
-        boolean res = false;
+    public String addRepo(String path) {        
         String fileT = FileUtil.getWorkDirectory() + File.separatorChar + nameFile;
         boolean ready = FileUtil.existOrCreate(fileT);
         //Solo nos hace falta sacar el id.
@@ -41,7 +40,6 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
             FileUtil.appendFile(fileT, idRepo+"|"+path);
         }
         return idRepo;
-
     }
 
     @Override
