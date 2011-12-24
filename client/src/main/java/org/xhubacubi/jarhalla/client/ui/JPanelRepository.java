@@ -19,7 +19,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import org.xhubacubi.alicante.core.SearchFilesUtil;
 import org.xhubacubi.alicante.core.jar.JarUtil;
+import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.ui.components.JLabelFileChooser;
+import org.xhubacubi.jarhalla.client.util.FileUtil;
 
 /**
  *
@@ -192,6 +194,8 @@ public class JPanelRepository extends JPanel {
                 log.append("Total de jars encontrados " + getTotalJars());
                 log.append("\n");
                 if (getTotalJars() > 0) {
+                    // si encontro jars, se graba el repositorio
+                    DemiurgoFacade.getInstance().getService().addRepo(this.path);
                     progress.setMinimum(0);
                     progress.setMaximum(getTotalJars());
 

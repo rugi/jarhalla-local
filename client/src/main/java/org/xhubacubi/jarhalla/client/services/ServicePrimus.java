@@ -60,7 +60,7 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
 
     @Override
     public boolean addRepo(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       return  this.repo.addRepo(path);
     }
 
     @Override

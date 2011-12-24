@@ -4,6 +4,8 @@
  */
 package org.xhubacubi.jarhalla.client.services;
 
+import org.xhubacubi.jarhalla.client.services.impl.RepositoryDaoFileImpl;
+
 /**
  *
  * @author rugi
@@ -15,7 +17,7 @@ public class DemiurgoFacade {
 
     private DemiurgoFacade() {
         super();
-        this.service = new ServicePrimus(null, null, null);
+        this.service = new ServicePrimus(new RepositoryDaoFileImpl(), null, null);
     }
 
     public static DemiurgoFacade getInstance() {
