@@ -17,7 +17,7 @@ public interface IRepositoryDao {
 
     public boolean deleteRepo(String path);
 
-    public List<Repo> getListRepo(String path);
+    public List<Repo> getListRepo();
 
     public boolean existRepo(String path);
 }

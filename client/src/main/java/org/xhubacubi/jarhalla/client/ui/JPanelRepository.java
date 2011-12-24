@@ -19,9 +19,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import org.xhubacubi.alicante.core.SearchFilesUtil;
 import org.xhubacubi.alicante.core.jar.JarUtil;
+import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.ui.components.JLabelFileChooser;
-import org.xhubacubi.jarhalla.client.util.FileUtil;
 
 /**
  *
@@ -53,45 +53,12 @@ public class JPanelRepository extends JPanel {
 
     public void initComponents() {
         this.setLayout(new BorderLayout());
-
         reposModel = new DefaultListModel();
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-        reposModel.addElement("/user/alfa/repo1");
-
+        List<Repo> r = DemiurgoFacade.getInstance().getService().getListRepo();
+        Iterator it1= r.iterator();
+        while(it1.hasNext()){
+            reposModel.addElement(it1.next().toString());
+        }
         listRepos = new JList(reposModel);
 
         listRepos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

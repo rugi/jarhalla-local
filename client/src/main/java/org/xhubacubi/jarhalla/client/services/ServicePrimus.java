@@ -81,7 +81,7 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
     }
 
     @Override
-    public List<Repo> getListRepo(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Repo> getListRepo() {
+        return  this.repo.getListRepo();
     }
 }

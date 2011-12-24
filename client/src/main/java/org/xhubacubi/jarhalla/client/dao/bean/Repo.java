@@ -35,4 +35,8 @@ public class Repo {
         this.path.delete(0, this.path.length());
         this.path.append(path);
     }
+    
+    public String toString(){
+        return this.path.toString();
+    }
 }

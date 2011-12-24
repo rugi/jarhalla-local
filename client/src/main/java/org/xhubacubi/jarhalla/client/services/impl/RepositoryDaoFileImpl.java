@@ -4,13 +4,10 @@
  */
 package org.xhubacubi.jarhalla.client.services.impl;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.xhubacubi.jarhalla.client.dao.IRepositoryDao;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.util.FileUtil;
@@ -22,9 +19,11 @@ import org.xhubacubi.jarhalla.client.util.FileUtil;
 public class RepositoryDaoFileImpl implements IRepositoryDao {
 
     private static final String nameFile = "repos.jiva";
-    public RepositoryDaoFileImpl(){
+
+    public RepositoryDaoFileImpl() {
         super();
     }
+
     @Override
     public boolean addRepo(String path) {
         boolean res = false;
@@ -43,8 +42,18 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
     }
 
     @Override
-    public List<Repo> getListRepo(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Repo> getListRepo() {
+        List<Repo> res = new ArrayList();
+        List<String> l = getListFromFileWithPatter(FileUtil.
+                getWorkDirectory() + 
+                File.separatorChar + nameFile, null);
+        if(l!=null){
+            Iterator it = l.iterator();            
+            while(it.hasNext()){
+                res.add(new Repo(it.next().toString()));
+            }
+        }
+        return res;
     }
 
     @Override
@@ -53,7 +62,7 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
     }
 
     private boolean existOrCreate(String fileName) {
-        String dirTarger =  fileName;
+        String dirTarger = fileName;
         File temp = new File(dirTarger);
         boolean res = false;
         if (!temp.exists()) {
@@ -73,8 +82,36 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
             out.write(line);
             out.close();
         } catch (IOException e) {
-           res = false; 
+            res = false;
         }
         return res;
+    }
+
+    /**
+     * Metodo que devuelve una lista de Strings dentro de un archivo
+     * siempre que cumplan con el patron indicado.
+     * Si es patron es = null, devuelve todas las lineas del archivo
+     * @param fileName nombre del archivo
+     * @param pattern patron de texto.
+     * @return 
+     */
+    private List<String> getListFromFileWithPatter(String fileName, String pattern) {
+        List<String> r = new ArrayList();
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(fileName));
+            String str;
+            while ((str = in.readLine()) != null) {
+                 if(pattern==null||pattern.trim().length()==0){
+                     r.add(str);
+                 }else{
+                     //se evalua el patron
+                 }
+            }
+            in.close();
+        } catch (IOException e) {
+            //
+            
+        }
+        return r;
     }
 }
