@@ -9,15 +9,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.Date;
-import java.util.List;
-import java.util.Vector;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import org.xhubacubi.jarhalla.client.dao.bean.IArray;
-import org.xhubacubi.jarhalla.client.dao.bean.Jarh;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.ui.components.JLabelInput;
@@ -76,6 +69,7 @@ public class JMain extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 JDialog jdialog = new JDialog();
+                jdialog.setSize(400, 400);
                 jdialog.setContentPane(new JPanelRepository());
                 jdialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 jdialog.setModal(true);
