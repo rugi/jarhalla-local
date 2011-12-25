@@ -7,6 +7,8 @@ package org.xhubacubi.jarhalla.client.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -49,18 +51,48 @@ public class JPanelRepository extends JPanel {
         super();
         initComponents();
     }
-    
 
     public void initComponents() {
         this.setLayout(new BorderLayout());
         reposModel = new DefaultListModel();
         reposModel.removeAllElements();
         List<Repo> r = DemiurgoFacade.getInstance().getService().getListRepo();
-        Iterator it1= r.iterator();
-        while(it1.hasNext()){
+        Iterator it1 = r.iterator();
+        while (it1.hasNext()) {
             reposModel.addElement(it1.next().toString());
         }
         listRepos = new JList(reposModel);
+        listRepos.addKeyListener(new KeyListener() {
+
+            // 8 back spcae
+            //127 es delete
+            @Override
+            public void keyTyped(KeyEvent ke) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent ke) {
+            
+            }
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                if(ke.getKeyCode()==KeyEvent.VK_DELETE||
+                   ke.getKeyCode()==KeyEvent.VK_BACK_SPACE){
+                    int p = listRepos.getSelectedIndex();
+                    if(p>=0){
+                        System.out.println("Elemento a borrar "+ p);
+                        //se pregunta
+                        //se elimina referencias a class
+                        //se elimna a referencias a jars
+                        //se elimina de la lista de repositorios
+                        //se elimina del modelo
+                        //se actualiza la lista
+                    }                                        
+                }               
+            }
+        });
 
         listRepos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scrollRepos = new JScrollPane(listRepos);
@@ -122,18 +154,18 @@ public class JPanelRepository extends JPanel {
             (new Thread(sjt)).start();
         }
     }
-    
-    private void disabledPanels(){
+
+    private void disabledPanels() {
         this.listRepos.setEnabled(false);
         this.buttonSearch.setEnabled(false);
-        this.chooserDir.disabledComponents();                
+        this.chooserDir.disabledComponents();
     }
-    
-    private void enabledPanels(){
+
+    private void enabledPanels() {
         this.listRepos.setEnabled(true);
         this.buttonSearch.setEnabled(true);
-        this.chooserDir.enabledComponents();                
-    }    
+        this.chooserDir.enabledComponents();
+    }
 
     //class
     class SearchJarThread implements Runnable {
@@ -176,34 +208,34 @@ public class JPanelRepository extends JPanel {
                         pathS.delete(0, pathS.length());
                         pathS.append(pathI.next());
                         System.out.println("Analizando " + pathS.toString());
-                        log.append("Analizando "+ k+" de "+ getTotalJars());
+                        log.append("Analizando " + k + " de " + getTotalJars());
                         log.append("\n");
-                        log.append("\t"+ pathS.toString());
+                        log.append("\t" + pathS.toString());
                         log.append("\n");
 
                         JarUtil ju = new JarUtil(pathS.toString());
-                        
+
                         //se van grabando los jars
                         String nameJar = new File(pathS.toString()).getName();
-                        String pathJar = pathS.toString().substring(0, pathS.toString().length()-nameJar.length());
+                        String pathJar = pathS.toString().substring(0, pathS.toString().length() - nameJar.length());
                         DemiurgoFacade.getInstance().getService().
                                 addJar(idRepo,
                                 pathJar,
-                                nameJar, 
-                                ju.getSize(), ju.getLastModif());                        
-                        List<String> clazz =  ju.getClassInside();
+                                nameJar,
+                                ju.getSize(), ju.getLastModif());
+                        List<String> clazz = ju.getClassInside();
                         log.append("\t\t Total de clases encontradas " + clazz.size());
                         log.append("\n");
                         // se graban las clases
                         DemiurgoFacade.getInstance().getService().
                                 addClass(idRepo,
-                                pathJar, 
-                                nameJar, 
+                                pathJar,
+                                nameJar,
                                 clazz);
                         progress.setValue(k);
                         ju = null;
                     }
-                    log.append("Analisis concluido"); 
+                    log.append("Analisis concluido");
                     log.append("\n");
                 } else {
                     JOptionPane.showMessageDialog(null, "No se encontraon JARs.");
@@ -212,7 +244,7 @@ public class JPanelRepository extends JPanel {
             } catch (IOException ex) {
                 Logger.getLogger(JPanelRepository.class.getName()).log(Level.SEVERE, null, ex);
             }
-             enabledPanels();
+            enabledPanels();
         }//run
 
         /**
