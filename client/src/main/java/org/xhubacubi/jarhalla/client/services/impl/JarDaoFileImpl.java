@@ -6,6 +6,7 @@ package org.xhubacubi.jarhalla.client.services.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.xhubacubi.jarhalla.client.dao.IJarDao;
 import org.xhubacubi.jarhalla.client.dao.bean.Jarh;
@@ -20,14 +21,14 @@ public class JarDaoFileImpl implements IJarDao {
     private static final String nameFile = "repo_$ID$_jars.jiva";
 
     @Override
-    public boolean addJar(String idRepo, String pathJar, String nameJar,int size, long lastModif) {
-        String fileT =  FileUtil.getWorkDirectory() + 
-                        File.separatorChar + 
-                        FileUtil.generateNameFile(nameFile, idRepo,"$ID$");        
+    public boolean addJar(String idRepo, String pathJar, String nameJar, int size, long lastModif) {
+        String fileT = FileUtil.getWorkDirectory()
+                + File.separatorChar
+                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
         boolean ready = FileUtil.existOrCreate(fileT);
-        if(ready){
-             FileUtil.appendFile(fileT, idRepo+"|"+pathJar+"|"+nameJar+"|"+size+"|"+lastModif);
-        }else{
+        if (ready) {
+            FileUtil.appendFile(fileT, idRepo + "|" + pathJar + "|" + nameJar + "|" + size + "|" + lastModif);
+        } else {
             throw new RuntimeException("No se pudo crear el archido de almacenamiento");
         }
         return false;
@@ -45,23 +46,28 @@ public class JarDaoFileImpl implements IJarDao {
 
     @Override
     public List<Jarh> getListJarByRepoAndLike(String idRepo, String like) {
-//        List<Jarh> r = new ArrayList<Jarh>();
-//                String fileT =  FileUtil.getWorkDirectory() + 
-//                        File.separatorChar + 
-//                        FileUtil.generateNameFile(nameFile, idRepo,"$ID$"); 
-//                List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);
-//                
-//                
-//                return r;
-                List<Jarh> r = new ArrayList<Jarh>();
-        Jarh j1 = new Jarh();
-        j1.setIdRepo("1");
-        j1.setJarName("alfa");
-        j1.setPathJar("/tmp/alfa/a/1");
-        j1.setSize(446464);
-        j1.setDateLastModif(1291056058000L);
-        r.add(j1);
+        List<Jarh> r = new ArrayList<Jarh>();
+        String fileT = FileUtil.getWorkDirectory()
+                + File.separatorChar
+                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
+        System.out.println("    ID a buscar "+idRepo);        
+        List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);
+        System.out.println("    lineas encontradas "+t.size());
+        Iterator it1 = t.iterator();
+        StringBuilder tmp = new StringBuilder();
+        while (it1.hasNext()) {
+            tmp.delete(0, tmp.length());
+            tmp.append(it1.next());
+            String[] s = tmp.toString().split("\\|");
+            Jarh j1 = new Jarh();
+            j1.setIdRepo(s[0]);
+            j1.setPathJar(s[1]);
+            j1.setJarName(s[2]);            
+            j1.setSize(Integer.parseInt(s[3]));
+            j1.setDateLastModif(Long.parseLong(s[4]));
+            r.add(j1);
+            s = null;
+        }
         return r;
     }
-
 }

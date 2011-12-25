@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -55,6 +54,7 @@ public class JPanelRepository extends JPanel {
     public void initComponents() {
         this.setLayout(new BorderLayout());
         reposModel = new DefaultListModel();
+        reposModel.removeAllElements();
         List<Repo> r = DemiurgoFacade.getInstance().getService().getListRepo();
         Iterator it1= r.iterator();
         while(it1.hasNext()){

@@ -16,16 +16,6 @@ public class App {
         main.setSize(300, 300);
         main.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         main.pack();
-        main.setVisible(true);
-        
-        
-        // Para probar el componente de listado de repositorios.
-//        JPanelRepository repos = new JPanelRepository();
-//        JFrame main = new JFrame();
-//        main.add(repos);
-//        main.setSize(300, 300);
-//        main.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-//        main.pack();
-//        main.setVisible(true);        
+        main.setVisible(true);           
     }
 }

@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.xhubacubi.jarhalla.client.dao.IClassDao;
 import org.xhubacubi.jarhalla.client.dao.bean.Clazz;
+import org.xhubacubi.jarhalla.client.dao.bean.Jarh;
 import org.xhubacubi.jarhalla.client.util.FileUtil;
 
 /**
@@ -52,12 +53,26 @@ public class ClassDaoFileImpl implements IClassDao {
     @Override
     public List<Clazz> getListClassByIdRepoAndLike(String idRepo, String like) {
         List<Clazz> r = new ArrayList<Clazz>();
-        Clazz j1 = new Clazz();
-        j1.setIdRepo("1");
-        j1.setPathJar("/tmp/t4/t5/f/");
-        j1.setJarName("alfa");
-        j1.setClassName("com.com.com.com.class");
-        r.add(j1);
-        return r;    
+        String fileT = FileUtil.getWorkDirectory()
+                + File.separatorChar
+                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
+        System.out.println("    ID a buscar "+idRepo);        
+        List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);
+        System.out.println("    lineas encontradas "+t.size());
+        Iterator it1 = t.iterator();
+        StringBuilder tmp = new StringBuilder();
+        while (it1.hasNext()) {
+            tmp.delete(0, tmp.length());
+            tmp.append(it1.next());
+            String[] s = tmp.toString().split("\\|");
+            Clazz j1 = new Clazz();
+            j1.setIdRepo(s[0]);
+            j1.setPathJar(s[1]);
+            j1.setJarName(s[2]);  
+            j1.setClassName(s[3]);              
+            r.add(j1);
+            s = null;
+        }
+        return r; 
     }
 }

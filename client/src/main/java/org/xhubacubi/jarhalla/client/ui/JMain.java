@@ -34,6 +34,7 @@ public class JMain extends JFrame {
     private JMenu mMain;
     private JMenu mExit;
     private JMenuItem mIExit;
+    private JMenuItem mConfRepos;
     private StatusBar status;
     private JTabbedPane tabbed;
     private DefaultComboBoxModel comboRepoModel;
@@ -50,11 +51,12 @@ public class JMain extends JFrame {
     }
 
     public void initComponents() {
-
+        comboRepoModel = new DefaultComboBoxModel();
         //primero el menu
         mIExit = new JMenuItem("Exit",
                 KeyEvent.VK_E);
-
+        mConfRepos = new JMenuItem("Repositorys",
+                KeyEvent.VK_R);
         mExit = new JMenu("Exit");
         mExit.setMnemonic(KeyEvent.VK_X);
         mExit.add(mIExit);
@@ -68,6 +70,19 @@ public class JMain extends JFrame {
 
         mMain = new JMenu("Config");
         mMain.setMnemonic(KeyEvent.VK_R);
+        mMain.add(mConfRepos);
+        mConfRepos.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                JDialog jdialog = new JDialog();
+                jdialog.setContentPane(new JPanelRepository());
+                jdialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                jdialog.setModal(true);
+                jdialog.setVisible(true);
+                updateModelComboRepos();
+            }
+        });
         menuBar = new JMenuBar();
         menuBar.add(mMain);
         menuBar.add(mExit);
@@ -123,13 +138,8 @@ public class JMain extends JFrame {
 
         tabPanel.add(radioPanel);
         tabPanel.add(new JLabelInput("Buscar", "Jar o clase a buscar"));
-        comboRepoModel = new DefaultComboBoxModel();
 
-        Object[] repos = DemiurgoFacade.getInstance().getService().getListRepo().toArray();
-        for (int k = 0; k < repos.length; k++) {
-            comboRepoModel.addElement(repos[k]);
-        }
-        this.comboRepo = new JComboBox(comboRepoModel);
+        updateModelComboRepos();
 
         tabPanel.add(comboRepo);
         buttonSearch = new JButton("Buscar");
@@ -137,6 +147,7 @@ public class JMain extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
+                cleanGrid();
                 if (!clasButton.isSelected() && !jarButton.isSelected()) {
                     JOptionPane.showMessageDialog(null, "Debe Seleccionar una opcion de busqueda: jar o class");
                     return;
@@ -145,18 +156,14 @@ public class JMain extends JFrame {
                     JOptionPane.showMessageDialog(null, "No existe un repositorio seleccionado.");
                     return;
                 }
-                System.out.println("El repositorio seleccionado es:" + comboRepoModel.getSelectedItem());
-                System.out.println("Esta seleccionado class " + clasButton.isSelected());
-                System.out.println("Esta seleccionado jar " + jarButton.isSelected());
-
                 Object[] r = null;
                 if (jarButton.isSelected()) {
                     r = DemiurgoFacade.getInstance().getService().
-                            getListJarByRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), "ant(.*?).jar(.*?)").toArray();
+                            getListJarByRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), null).toArray();
                 }
                 if (clasButton.isSelected()) {
                     r = DemiurgoFacade.getInstance().getService().
-                            getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), "ant(.*?).class").toArray();
+                            getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), null).toArray();
                 }
                 System.out.println("Tamaño de respuesta " + r.length);
                 if (r == null && r.length == 0) {
@@ -164,7 +171,7 @@ public class JMain extends JFrame {
                     return;
                 } else {
                     for (int k = 0; k < r.length; k++) {
-                        modeloGrid.addRow(((IArray) r[0]).toArray());
+                        modeloGrid.addRow(((IArray) r[k]).toArray());
                     }
                 }
 
@@ -196,5 +203,14 @@ public class JMain extends JFrame {
         for (int k = 0; k < p; k++) {
             modeloGrid.removeRow(0);
         }
+    }
+
+    private void updateModelComboRepos() {
+        comboRepoModel.removeAllElements();
+        Object[] repos = DemiurgoFacade.getInstance().getService().getListRepo().toArray();
+        for (int k = 0; k < repos.length; k++) {
+            comboRepoModel.addElement(repos[k]);
+        }
+        this.comboRepo = new JComboBox(comboRepoModel);
     }
 }
