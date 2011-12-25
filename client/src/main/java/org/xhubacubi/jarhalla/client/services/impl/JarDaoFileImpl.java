@@ -5,6 +5,7 @@
 package org.xhubacubi.jarhalla.client.services.impl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import org.xhubacubi.jarhalla.client.dao.IJarDao;
 import org.xhubacubi.jarhalla.client.dao.bean.Jarh;
@@ -44,7 +45,23 @@ public class JarDaoFileImpl implements IJarDao {
 
     @Override
     public List<Jarh> getListJarByRepoAndLike(String idRepo, String like) {
-        throw new UnsupportedOperationException("Not supported yet.");
+//        List<Jarh> r = new ArrayList<Jarh>();
+//                String fileT =  FileUtil.getWorkDirectory() + 
+//                        File.separatorChar + 
+//                        FileUtil.generateNameFile(nameFile, idRepo,"$ID$"); 
+//                List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);
+//                
+//                
+//                return r;
+                List<Jarh> r = new ArrayList<Jarh>();
+        Jarh j1 = new Jarh();
+        j1.setIdRepo("1");
+        j1.setJarName("alfa");
+        j1.setPathJar("/tmp/alfa/a/1");
+        j1.setSize(446464);
+        j1.setDateLastModif(1291056058000L);
+        r.add(j1);
+        return r;
     }
 
 }

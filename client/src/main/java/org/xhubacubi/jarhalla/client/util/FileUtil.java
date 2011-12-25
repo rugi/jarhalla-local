@@ -97,7 +97,9 @@ public class FileUtil {
                 if (pattern == null || pattern.trim().length() == 0) {
                     r.add(str);
                 } else {
-                    //se evalua el patron
+                    if(str.matches(pattern)){
+                        r.add(str);
+                    }
                 }
             }
             in.close();

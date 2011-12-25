@@ -8,9 +8,10 @@ package org.xhubacubi.jarhalla.client.dao.bean;
  *
  * @author rugi
  */
-public class Clazz {
+public class Clazz implements IArray {
 
     private String idRepo;
+    private String pathJar;
     private String jarName;
     private String className;
 
@@ -60,5 +61,28 @@ public class Clazz {
      */
     public void setIdRepo(String idRepo) {
         this.idRepo = idRepo;
+    }
+
+    @Override
+    public Object[] toArray() {
+        Object [] r = new  Object [3];
+        r[0] = this.pathJar;
+        r[1] = this.jarName;
+        r[2] = this.className;
+        return r;
+    }
+
+    /**
+     * @return the pathJar
+     */
+    public String getPathJar() {
+        return pathJar;
+    }
+
+    /**
+     * @param pathJar the pathJar to set
+     */
+    public void setPathJar(String pathJar) {
+        this.pathJar = pathJar;
     }
 }

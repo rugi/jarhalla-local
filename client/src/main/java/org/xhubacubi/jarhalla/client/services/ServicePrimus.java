@@ -4,10 +4,12 @@
  */
 package org.xhubacubi.jarhalla.client.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.xhubacubi.jarhalla.client.dao.IClassDao;
 import org.xhubacubi.jarhalla.client.dao.IJarDao;
 import org.xhubacubi.jarhalla.client.dao.IRepositoryDao;
+import org.xhubacubi.jarhalla.client.dao.bean.Clazz;
 import org.xhubacubi.jarhalla.client.dao.bean.Jarh;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 
@@ -39,8 +41,8 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
     }
 
     @Override
-    public List<String> getListClassByPathAndNameJar(String path, String nameJar) {
-       return this.clazz.getListClassByPathAndNameJar(path, nameJar);
+    public List<Clazz> getListClassByIdRepoAndLike(String idRepo, String like) {
+       return this.clazz.getListClassByIdRepoAndLike(idRepo, like);    
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
 
     @Override
     public List<Jarh> getListJarByRepoAndLike(String path, String like) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.jar.getListJarByRepoAndLike(like, like);
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.xhubacubi.jarhalla.client.dao.IClassDao;
+import org.xhubacubi.jarhalla.client.dao.bean.Clazz;
 import org.xhubacubi.jarhalla.client.util.FileUtil;
 
 /**
@@ -49,7 +50,14 @@ public class ClassDaoFileImpl implements IClassDao {
     }
 
     @Override
-    public List<String> getListClassByPathAndNameJar(String idRepo, String nameJar) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Clazz> getListClassByIdRepoAndLike(String idRepo, String like) {
+        List<Clazz> r = new ArrayList<Clazz>();
+        Clazz j1 = new Clazz();
+        j1.setIdRepo("1");
+        j1.setPathJar("/tmp/t4/t5/f/");
+        j1.setJarName("alfa");
+        j1.setClassName("com.com.com.com.class");
+        r.add(j1);
+        return r;    
     }
 }

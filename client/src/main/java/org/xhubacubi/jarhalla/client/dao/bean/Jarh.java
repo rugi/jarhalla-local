@@ -4,20 +4,23 @@
  */
 package org.xhubacubi.jarhalla.client.dao.bean;
 
+import java.util.Date;
+
 /**
  *
  * @author rugi
  */
-public class Jarh {
-  private String idRepo;
-  private String jarName;
-  private int size;
-  private long dateLastModif;
+public class Jarh implements IArray {
 
-  public Jarh(){
-    super();
-  }
+    private String idRepo;
+    private String pathJar;
+    private String jarName;
+    private int size;
+    private long dateLastModif;
 
+    public Jarh() {
+        super();
+    }
 
     /**
      * @return the jarName
@@ -73,5 +76,29 @@ public class Jarh {
      */
     public void setIdRepo(String idRepo) {
         this.idRepo = idRepo;
+    }
+
+    /**
+     * @return the pathJar
+     */
+    public String getPathJar() {
+        return pathJar;
+    }
+
+    /**
+     * @param pathJar the pathJar to set
+     */
+    public void setPathJar(String pathJar) {
+        this.pathJar = pathJar;
+    }
+
+    @Override
+    public Object[] toArray() {
+        Object [] r = new  Object [4];
+        r[0] = this.pathJar;
+        r[1] = this.jarName;
+        r[2] =  new Integer(this.size);
+        r[3] = new Date(this.dateLastModif);
+        return r;
     }
 }
