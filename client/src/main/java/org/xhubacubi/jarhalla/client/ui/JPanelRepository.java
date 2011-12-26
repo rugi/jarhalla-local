@@ -68,29 +68,27 @@ public class JPanelRepository extends JPanel {
             //127 es delete
             @Override
             public void keyTyped(KeyEvent ke) {
-
             }
 
             @Override
             public void keyPressed(KeyEvent ke) {
-            
             }
 
             @Override
             public void keyReleased(KeyEvent ke) {
-                if(ke.getKeyCode()==KeyEvent.VK_DELETE||
-                   ke.getKeyCode()==KeyEvent.VK_BACK_SPACE){
+                if (ke.getKeyCode() == KeyEvent.VK_DELETE
+                        || ke.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                     int p = listRepos.getSelectedIndex();
-                    if(p>=0){
-                        System.out.println("Elemento a borrar "+ p);
+                    if (p >= 0) {
+                        System.out.println("Elemento a borrar " + p);
                         //se pregunta
                         //se elimina referencias a class
                         //se elimna a referencias a jars
                         //se elimina de la lista de repositorios
                         //se elimina del modelo
                         //se actualiza la lista
-                    }                                        
-                }               
+                    }
+                }
             }
         });
 
@@ -194,9 +192,41 @@ public class JPanelRepository extends JPanel {
                 log.append("Total de jars encontrados " + getTotalJars());
                 log.append("\n");
                 if (getTotalJars() > 0) {
+                    String idRepo = null;
                     //TODO falta validar repositorio existents
+                    if (DemiurgoFacade.getInstance().getService().existRepo(this.path)) {
+                        Object[] options = {"Sí",
+                            "No"};
+                        int n = JOptionPane.showOptionDialog(null,
+                                "Ya existe esa carpeta como repositorio "
+                                + "¿Desea volver a generarlo?",
+                                "Repositorio existente.",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[1]);
+                        System.out.println("Respuesta " + n);
+                        System.out.println("El id del repo seleccionado es:"
+                                + DemiurgoFacade.getInstance().
+                                getService().
+                                getRepoByPath(this.path).getId());
+                        if (n == 0) {
+                            //Se recupera id del repositorio
+                            System.out.println("El id del repo seleccionado es:"
+                                    + DemiurgoFacade.getInstance().
+                                    getService().
+                                    getRepoByPath(this.path).getId());
+                            //se elimnan los archivos. martes
+                            // el de clases.miercoles
+                            // el de jars.jueves
+                        } else {
+                            return;
+                        }
+                        return;
+                    }//if
                     // si encontro jars, se crea el repositorio
-                    String idRepo = DemiurgoFacade.getInstance().getService().addRepo(this.path);
+                    idRepo = DemiurgoFacade.getInstance().getService().addRepo(this.path);
                     progress.setMinimum(0);
                     progress.setMaximum(getTotalJars());
 

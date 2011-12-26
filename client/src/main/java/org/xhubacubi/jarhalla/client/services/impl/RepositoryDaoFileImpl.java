@@ -70,8 +70,32 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
 
     @Override
     public boolean existRepo(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean res = false;
+        List<Repo> t =   getListRepo();
+        Iterator<Repo> it1= t.iterator();
+        while(it1.hasNext()){
+            if(it1.next().getPath().equals(path)){
+                res = true;
+                break;
+            }
+        }
+        return res;
     }
 
-
+    @Override
+    public Repo getRepoByPath(String path) {
+       Repo res = null;      
+        List<Repo> t =   getListRepo();
+        Iterator<Repo> it1= t.iterator();
+        while(it1.hasNext()){
+            Repo r = it1.next();
+            if(r.getPath().equals(path)){
+                res = new Repo();
+                res.setId(r.getId());
+                res.setPath(r.getPath());
+                break;
+            }
+        }       
+       return res;
+    }
 }

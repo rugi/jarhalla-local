@@ -74,7 +74,7 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
 
     @Override
     public boolean existRepo(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.repo.existRepo(path);
     }
 
     @Override
@@ -90,5 +90,10 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
     @Override
     public boolean addClass(String idRepo, String pathJar, String nameJar, List<String> items) {
         return clazz.addClass(idRepo, pathJar, nameJar, items);
+    }
+
+    @Override
+    public Repo getRepoByPath(String path) {
+        return this.repo.getRepoByPath(path);
     }
 }

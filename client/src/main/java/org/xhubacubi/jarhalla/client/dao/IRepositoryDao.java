@@ -20,4 +20,6 @@ public interface IRepositoryDao {
     public List<Repo> getListRepo();
 
     public boolean existRepo(String path);
+    
+    public Repo getRepoByPath(String path);
 }
