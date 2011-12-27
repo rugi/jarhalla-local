@@ -29,7 +29,7 @@ import org.xhubacubi.jarhalla.client.ui.components.JLabelFileChooser;
  *
  * @author rugi
  */
-public class JPanelRepository extends JPanel {
+public final class JPanelRepository extends JPanel {
 
     private JScrollPane scrollRepos;
     private JList listRepos;
@@ -213,20 +213,27 @@ public class JPanelRepository extends JPanel {
                                 getRepoByPath(this.path).getId());
                         if (n == 0) {
                             //Se recupera id del repositorio
-                            System.out.println("El id del repo seleccionado es:"
-                                    + DemiurgoFacade.getInstance().
+                            idRepo= DemiurgoFacade.getInstance().
                                     getService().
-                                    getRepoByPath(this.path).getId());
-                            //se elimnan los archivos. martes
-                            // el de clases.miercoles
-                            // el de jars.jueves
+                                    getRepoByPath(this.path).getId();
+                            System.out.println("El id del repo seleccionado es:"
+                                    + idRepo);
+                            // se elimnan los archivos. 
+                            // TODO el de clases.Martes
+                            boolean deleteClass = DemiurgoFacade.getInstance().
+                                    getService().deleteClassByIdRepo(idRepo);                            
+                            // TODO el de jars.Martes
+                            boolean deleteJar   = DemiurgoFacade.getInstance().
+                                    getService().deleteJarByRepo(idRepo);
                         } else {
                             return;
                         }
-                        return;
+                        //return;
                     }//if
                     // si encontro jars, se crea el repositorio
-                    idRepo = DemiurgoFacade.getInstance().getService().addRepo(this.path);
+                    if(idRepo==null){
+                        idRepo = DemiurgoFacade.getInstance().getService().addRepo(this.path);
+                    }
                     progress.setMinimum(0);
                     progress.setMaximum(getTotalJars());
 

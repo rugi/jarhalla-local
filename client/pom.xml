@@ -21,13 +21,7 @@
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
-        </dependency>
-        <!-- MySQL database driver -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.9</version>
-        </dependency>    
+        </dependency>  
         <!-- Puedes encontrar este artefacto en: https://github.com/rugi/alicante -->
         <dependency>
             <groupId>org.xhubacubi.alicante.core</groupId>

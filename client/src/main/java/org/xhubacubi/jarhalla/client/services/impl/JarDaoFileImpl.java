@@ -36,7 +36,12 @@ public class JarDaoFileImpl implements IJarDao {
 
     @Override
     public boolean deleteJarByRepo(String idRepo) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean res = false;
+        String fileT = FileUtil.getWorkDirectory()
+                + File.separatorChar
+                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
+        System.out.println("El archivo a borrar es: " + fileT);
+        return new File(fileT).delete();
     }
 
     @Override
@@ -50,9 +55,9 @@ public class JarDaoFileImpl implements IJarDao {
         String fileT = FileUtil.getWorkDirectory()
                 + File.separatorChar
                 + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
-        System.out.println("    ID a buscar "+idRepo);        
+        System.out.println("    ID a buscar " + idRepo);
         List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);
-        System.out.println("    lineas encontradas "+t.size());
+        System.out.println("    lineas encontradas " + t.size());
         Iterator it1 = t.iterator();
         StringBuilder tmp = new StringBuilder();
         while (it1.hasNext()) {
@@ -62,7 +67,7 @@ public class JarDaoFileImpl implements IJarDao {
             Jarh j1 = new Jarh();
             j1.setIdRepo(s[0]);
             j1.setPathJar(s[1]);
-            j1.setJarName(s[2]);            
+            j1.setJarName(s[2]);
             j1.setSize(Integer.parseInt(s[3]));
             j1.setDateLastModif(Long.parseLong(s[4]));
             r.add(j1);

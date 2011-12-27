@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.xhubacubi.jarhalla.client.dao.IClassDao;
 import org.xhubacubi.jarhalla.client.dao.bean.Clazz;
-import org.xhubacubi.jarhalla.client.dao.bean.Jarh;
 import org.xhubacubi.jarhalla.client.util.FileUtil;
 
 /**
@@ -22,7 +21,7 @@ public class ClassDaoFileImpl implements IClassDao {
     private static final String nameFile = "repo_$ID$_class.jiva";
 
     @Override
-    public boolean addClass(String idRepo,String pathJar , String nameJar, List<String> items) {
+    public boolean addClass(String idRepo, String pathJar, String nameJar, List<String> items) {
         String fileT = FileUtil.getWorkDirectory()
                 + File.separatorChar
                 + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
@@ -31,7 +30,7 @@ public class ClassDaoFileImpl implements IClassDao {
             List<Object> target = new ArrayList<Object>();
             Iterator it = items.iterator();
             while (it.hasNext()) {
-                target.add(idRepo + "|"+pathJar+"|" + nameJar + "|" + it.next().toString().replace("/", "."));
+                target.add(idRepo + "|" + pathJar + "|" + nameJar + "|" + it.next().toString().replace("/", "."));
             }
             FileUtil.appendFile(fileT, target);
         } else {
@@ -41,7 +40,7 @@ public class ClassDaoFileImpl implements IClassDao {
     }
 
     @Override
-    public boolean addClass(String idRepo,String pathJar , String nameJar, String clazz) {
+    public boolean addClass(String idRepo, String pathJar, String nameJar, String clazz) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -56,9 +55,9 @@ public class ClassDaoFileImpl implements IClassDao {
         String fileT = FileUtil.getWorkDirectory()
                 + File.separatorChar
                 + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
-        System.out.println("    ID a buscar "+idRepo);        
+        System.out.println("    ID a buscar " + idRepo);
         List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);
-        System.out.println("    lineas encontradas "+t.size());
+        System.out.println("    lineas encontradas " + t.size());
         Iterator it1 = t.iterator();
         StringBuilder tmp = new StringBuilder();
         while (it1.hasNext()) {
@@ -68,11 +67,21 @@ public class ClassDaoFileImpl implements IClassDao {
             Clazz j1 = new Clazz();
             j1.setIdRepo(s[0]);
             j1.setPathJar(s[1]);
-            j1.setJarName(s[2]);  
-            j1.setClassName(s[3]);              
+            j1.setJarName(s[2]);
+            j1.setClassName(s[3]);
             r.add(j1);
             s = null;
         }
-        return r; 
+        return r;
+    }
+
+    @Override
+    public boolean deleteClassByIdRepo(String idRepo) {
+        boolean res = false;
+        String fileT = FileUtil.getWorkDirectory()
+                + File.separatorChar
+                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
+        System.out.println("El archivo a eliminar es " + fileT);        
+        return new File(fileT).delete();
     }
 }

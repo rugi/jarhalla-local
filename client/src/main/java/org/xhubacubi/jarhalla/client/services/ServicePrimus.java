@@ -52,7 +52,7 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
 
     @Override
     public boolean deleteJarByRepo(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.jar.deleteJarByRepo(path);
     }
 
     @Override
@@ -95,5 +95,10 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
     @Override
     public Repo getRepoByPath(String path) {
         return this.repo.getRepoByPath(path);
+    }
+
+    @Override
+    public boolean deleteClassByIdRepo(String idRepo) {
+        return this.clazz.deleteClassByIdRepo(idRepo);
     }
 }

@@ -16,6 +16,7 @@ public interface IClassDao {
     public boolean addClass(String idRepo,String pathJar ,String nameJar, String clazz);
     public boolean addClass(String idRepo,String pathJar , String nameJar, List<String> items);
 
+    public boolean deleteClassByIdRepo(String idRepo);
     public boolean deleteClassByPathAndNameJar(String idRepo, String nameJar);
 
     public List<Clazz> getListClassByIdRepoAndLike(String idRepo, String like);
