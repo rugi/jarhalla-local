@@ -48,4 +48,7 @@ public class JLabelInput extends JPanel {
         this.add(input,BorderLayout.CENTER);
         this.validate();        
     }
+    public String getTextInput(){
+        return this.input.getText();
+    }
 }

@@ -116,7 +116,7 @@ public class FileUtil {
             }
             in.close();
         } catch (IOException e) {
-            //
+            System.out.println("excepcion:"+e);
         }
         return r;
     }

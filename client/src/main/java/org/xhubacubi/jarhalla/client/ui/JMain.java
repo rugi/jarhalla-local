@@ -16,6 +16,7 @@ import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.ui.components.JLabelInput;
 import org.xhubacubi.jarhalla.client.ui.components.SingleTableModel;
 import org.xhubacubi.jarhalla.client.ui.components.StatusBar;
+import org.xhubacubi.jarhalla.client.util.StringUtil;
 
 /**
  *
@@ -37,7 +38,7 @@ public class JMain extends JFrame {
     private JRadioButton clasButton;
     private SingleTableModel modeloGrid;
     private JTable grid;
-
+    private JLabelInput labelInput;
     public JMain() {
         super();
         initComponents();
@@ -131,7 +132,8 @@ public class JMain extends JFrame {
         radioPanel.add(clasButton);
 
         tabPanel.add(radioPanel);
-        tabPanel.add(new JLabelInput("Buscar", "Jar o clase a buscar"));
+        labelInput = new JLabelInput("Buscar", "Jar o clase a buscar");
+        tabPanel.add(labelInput);
 
         updateModelComboRepos();
 
@@ -150,14 +152,20 @@ public class JMain extends JFrame {
                     JOptionPane.showMessageDialog(null, "No existe un repositorio seleccionado.");
                     return;
                 }
+                if (labelInput.getTextInput().trim().length()==0) {
+                    JOptionPane.showMessageDialog(null, "Debe especificar un criterio de búsqueda.");
+                    return;
+                }                
                 Object[] r = null;
+                String searchText = StringUtil.generatePattern( labelInput.getTextInput().trim());
+                
                 if (jarButton.isSelected()) {
                     r = DemiurgoFacade.getInstance().getService().
-                            getListJarByRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), null).toArray();
+                            getListJarByRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
                 }
                 if (clasButton.isSelected()) {
                     r = DemiurgoFacade.getInstance().getService().
-                            getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), null).toArray();
+                            getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
                 }
                 System.out.println("Tamaño de respuesta " + r.length);
                 if (r == null && r.length == 0) {
