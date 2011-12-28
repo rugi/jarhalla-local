@@ -43,8 +43,23 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
     }
 
     @Override
-    public boolean deleteRepo(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean deleteRepo(String id) {
+                String fileT = FileUtil.getWorkDirectory() + File.separatorChar + nameFile;
+        boolean ready = FileUtil.existOrCreate(fileT);
+        System.out.println("El archivo a limpiar es: "+fileT);
+        List<Repo> temp  = getListRepo() ;
+        System.out.println("Antes de borrar "+ temp);
+        Repo dele = new Repo();
+        FileUtil.cleanFile(fileT);
+        dele.setId(id);
+        temp.remove(dele);
+        Iterator<Repo> it4 = temp.iterator();
+        while(it4.hasNext()){
+            Repo t = it4.next();
+           FileUtil.appendFile(fileT, t.getId()+"|"+t.getPath());
+        }
+        System.out.println("Despues de borrar "+temp);
+       return false;
     }
 
     @Override

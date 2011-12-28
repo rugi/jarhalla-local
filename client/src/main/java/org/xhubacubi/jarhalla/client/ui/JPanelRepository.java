@@ -52,15 +52,19 @@ public final class JPanelRepository extends JPanel {
         initComponents();
     }
 
-    public void initComponents() {
-        this.setLayout(new BorderLayout());
-        reposModel = new DefaultListModel();
+    private void updateReposList() {
         reposModel.removeAllElements();
         List<Repo> r = DemiurgoFacade.getInstance().getService().getListRepo();
         Iterator it1 = r.iterator();
         while (it1.hasNext()) {
             reposModel.addElement(it1.next().toString());
         }
+    }
+
+    public void initComponents() {
+        this.setLayout(new BorderLayout());
+        reposModel = new DefaultListModel();
+        updateReposList();
         listRepos = new JList(reposModel);
         listRepos.addKeyListener(new KeyListener() {
 
@@ -81,12 +85,27 @@ public final class JPanelRepository extends JPanel {
                     int p = listRepos.getSelectedIndex();
                     if (p >= 0) {
                         System.out.println("Elemento a borrar " + p);
-                        //se pregunta
-                        //se elimina referencias a class
-                        //se elimna a referencias a jars
-                        //se elimina de la lista de repositorios
-                        //se elimina del modelo
-                        //se actualiza la lista
+                        Object[] options = {"Sí",
+                            "No"};
+                        int n = JOptionPane.showOptionDialog(null,
+                                "¿Desea eliminar el repositorio seleccionado?",
+                                "Eliminar repositorio existente.",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[1]);
+
+                        if (n == 0) {
+                            List<Repo> r = DemiurgoFacade.getInstance().getService().getListRepo();
+                            String id = r.get(p).getId();
+                            System.out.println("El id a borrar es " + id);
+                            DemiurgoFacade.getInstance().getService().deleteRepo(id);
+                            //se elimina del modelo
+                            reposModel.remove(p);
+                            //se actualiza la lista
+                            listRepos.repaint();
+                        }
                     }
                 }
             }
@@ -139,7 +158,7 @@ public final class JPanelRepository extends JPanel {
         public void actionPerformed(ActionEvent ae) {
             String dir = chooserDir.getDirectory();
             if (dir.length() == 0) {
-                JOptionPane.showMessageDialog(null, "Debe inficar un directorio.");
+                JOptionPane.showMessageDialog(null, "Debe indicar un directorio.");
                 return;
             }
             // Directorio contiene algo.
@@ -181,6 +200,7 @@ public final class JPanelRepository extends JPanel {
         @Override
         public void run() {
             try {
+                log.setText("");
                 disabledPanels();
                 progress.setIndeterminate(true);
                 setTotalJars(0);
@@ -213,7 +233,7 @@ public final class JPanelRepository extends JPanel {
                                 getRepoByPath(this.path).getId());
                         if (n == 0) {
                             //Se recupera id del repositorio
-                            idRepo= DemiurgoFacade.getInstance().
+                            idRepo = DemiurgoFacade.getInstance().
                                     getService().
                                     getRepoByPath(this.path).getId();
                             System.out.println("El id del repo seleccionado es:"
@@ -221,9 +241,9 @@ public final class JPanelRepository extends JPanel {
                             // se elimnan los archivos. 
                             // TODO el de clases.Martes
                             boolean deleteClass = DemiurgoFacade.getInstance().
-                                    getService().deleteClassByIdRepo(idRepo);                            
+                                    getService().deleteClassByIdRepo(idRepo);
                             // TODO el de jars.Martes
-                            boolean deleteJar   = DemiurgoFacade.getInstance().
+                            boolean deleteJar = DemiurgoFacade.getInstance().
                                     getService().deleteJarByRepo(idRepo);
                         } else {
                             return;
@@ -231,7 +251,7 @@ public final class JPanelRepository extends JPanel {
                         //return;
                     }//if
                     // si encontro jars, se crea el repositorio
-                    if(idRepo==null){
+                    if (idRepo == null) {
                         idRepo = DemiurgoFacade.getInstance().getService().addRepo(this.path);
                     }
                     progress.setMinimum(0);
@@ -274,6 +294,8 @@ public final class JPanelRepository extends JPanel {
                     }
                     log.append("Analisis concluido");
                     log.append("\n");
+                    updateReposList();
+                    JOptionPane.showMessageDialog(null, "Ha concluido el análisis de la carpeta.");
                 } else {
                     JOptionPane.showMessageDialog(null, "No se encontraon JARs.");
                     return;

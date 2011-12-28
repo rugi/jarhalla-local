@@ -15,7 +15,7 @@ public interface IRepositoryDao {
 
     public String addRepo(String path);
 
-    public boolean deleteRepo(String path);
+    public boolean deleteRepo(String id);
 
     public List<Repo> getListRepo();
 

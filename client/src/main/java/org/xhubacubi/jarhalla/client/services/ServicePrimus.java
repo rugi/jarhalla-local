@@ -31,23 +31,23 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
     }
 
     @Override
-    public boolean addClass(String idRepo, String pathJar,String nameJar, String clazz) {
-        return this.clazz.addClass(idRepo, pathJar ,nameJar, clazz);
+    public boolean addClass(String idRepo, String pathJar, String nameJar, String clazz) {
+        return this.clazz.addClass(idRepo, pathJar, nameJar, clazz);
     }
 
     @Override
     public boolean deleteClassByPathAndNameJar(String path, String nameJar) {
-       return this.clazz.deleteClassByPathAndNameJar(path, nameJar);
+        return this.clazz.deleteClassByPathAndNameJar(path, nameJar);
     }
 
     @Override
     public List<Clazz> getListClassByIdRepoAndLike(String idRepo, String like) {
-       return this.clazz.getListClassByIdRepoAndLike(idRepo, like);    
+        return this.clazz.getListClassByIdRepoAndLike(idRepo, like);
     }
 
     @Override
-    public boolean addJar(String idRepo, String pathJar, String nameJar ,int size, long lastModif) {
-        return  this.jar.addJar(idRepo, pathJar, nameJar,size, lastModif);
+    public boolean addJar(String idRepo, String pathJar, String nameJar, int size, long lastModif) {
+        return this.jar.addJar(idRepo, pathJar, nameJar, size, lastModif);
     }
 
     @Override
@@ -62,15 +62,16 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
 
     @Override
     public String addRepo(String path) {
-       return  this.repo.addRepo(path);
+        return this.repo.addRepo(path);
     }
 
     @Override
-    public boolean deleteRepo(String path) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean deleteRepo(String id) {
+        this.repo.deleteRepo(id);
+        this.jar.deleteJarByRepo(id);
+        this.clazz.deleteClassByIdRepo(id);
+        return true;
     }
-
-
 
     @Override
     public boolean existRepo(String path) {
@@ -84,7 +85,7 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
 
     @Override
     public List<Repo> getListRepo() {
-        return  this.repo.getListRepo();
+        return this.repo.getListRepo();
     }
 
     @Override

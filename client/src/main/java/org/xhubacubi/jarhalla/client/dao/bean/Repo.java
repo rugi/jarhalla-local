@@ -11,19 +11,18 @@ import java.util.Date;
  * @author rugi
  */
 public class Repo {
+
     private String id;
     private String path;
-    
-    public Repo(){
+
+    public Repo() {
         this("", "");
     }
 
-    
-    public Repo(String id, String path){
+    public Repo(String id, String path) {
         super();
-        this.path =path; 
+        this.path = path;
         this.id = id;
-        System.out.println("Asignando "+ id + ":"+this.path);
     }
 
     /**
@@ -39,8 +38,8 @@ public class Repo {
     public void setPath(String path) {
         this.path = path;
     }
-    
-    public String toString(){
+
+    public String toString() {
         return this.path;
     }
 
@@ -56,5 +55,31 @@ public class Repo {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (this.getClass() != other.getClass()) {
+            return false;
+        }
+        if (this.id.equals(((Repo) other).id)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 23 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
     }
 }

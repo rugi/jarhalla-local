@@ -64,6 +64,18 @@ public class FileUtil {
         return res;
     }
 
+    public static boolean cleanFile(String fileName) {
+        boolean res = true;
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+            out.write("");            
+            out.close();
+        } catch (IOException e) {
+            res = false;
+        }
+        return res;
+    }    
+    
     public static boolean appendFile(String fileName, List<Object> lines) {
         boolean res = true;
         try {
