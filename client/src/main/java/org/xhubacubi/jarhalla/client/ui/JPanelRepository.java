@@ -212,8 +212,7 @@ public final class JPanelRepository extends JPanel {
                 log.append("Total de jars encontrados " + getTotalJars());
                 log.append("\n");
                 if (getTotalJars() > 0) {
-                    String idRepo = null;
-                    //TODO falta validar repositorio existents
+                    String idRepo = null;                    
                     if (DemiurgoFacade.getInstance().getService().existRepo(this.path)) {
                         Object[] options = {"Sí",
                             "No"};
@@ -238,11 +237,9 @@ public final class JPanelRepository extends JPanel {
                                     getRepoByPath(this.path).getId();
                             System.out.println("El id del repo seleccionado es:"
                                     + idRepo);
-                            // se elimnan los archivos. 
-                            // TODO el de clases.Martes
+                            // se elimnan los archivos.                             
                             boolean deleteClass = DemiurgoFacade.getInstance().
-                                    getService().deleteClassByIdRepo(idRepo);
-                            // TODO el de jars.Martes
+                                    getService().deleteClassByIdRepo(idRepo);                           
                             boolean deleteJar = DemiurgoFacade.getInstance().
                                     getService().deleteJarByRepo(idRepo);
                         } else {
@@ -270,6 +267,7 @@ public final class JPanelRepository extends JPanel {
                         log.append("\t" + pathS.toString());
                         log.append("\n");
 
+                        //TODO esto no me late, debo modificar la clase JarUtil.
                         JarUtil ju = new JarUtil(pathS.toString());
 
                         //se van grabando los jars

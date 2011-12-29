@@ -5,6 +5,7 @@
 package org.xhubacubi.jarhalla.client.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +40,7 @@ public class JMain extends JFrame {
     private SingleTableModel modeloGrid;
     private JTable grid;
     private JLabelInput labelInput;
+
     public JMain() {
         super();
         initComponents();
@@ -152,30 +154,12 @@ public class JMain extends JFrame {
                     JOptionPane.showMessageDialog(null, "No existe un repositorio seleccionado.");
                     return;
                 }
-                if (labelInput.getTextInput().trim().length()==0) {
+                if (labelInput.getTextInput().trim().length() == 0) {
                     JOptionPane.showMessageDialog(null, "Debe especificar un criterio de búsqueda.");
                     return;
-                }                
-                Object[] r = null;
-                String searchText = StringUtil.generatePattern( labelInput.getTextInput().trim());
-                
-                if (jarButton.isSelected()) {
-                    r = DemiurgoFacade.getInstance().getService().
-                            getListJarByRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
-                }
-                if (clasButton.isSelected()) {
-                    r = DemiurgoFacade.getInstance().getService().
-                            getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
-                }
-                System.out.println("Tamaño de respuesta " + r.length);
-                if (r == null && r.length == 0) {
-                    JOptionPane.showMessageDialog(null, "No se encontraron resultados para su busqueda.");
-                    return;
-                } else {
-                    for (int k = 0; k < r.length; k++) {
-                        modeloGrid.addRow(((IArray) r[k]).toArray());
-                    }
-                }
+                }               
+            SearchThread st = new SearchThread();
+            (new Thread(st)).start();
 
             }
         });
@@ -215,4 +199,41 @@ public class JMain extends JFrame {
         }
         this.comboRepo = new JComboBox(comboRepoModel);
     }
+
+    //class
+    class SearchThread implements Runnable {
+
+        @Override
+        public void run() {
+            
+            buttonSearch.setEnabled(false); 
+            Cursor c1 = buttonSearch.getCursor();
+            buttonSearch.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            Object[] r = null;
+            String searchText = StringUtil.generatePattern(labelInput.getTextInput().trim());
+
+            if (jarButton.isSelected()) {
+                r = DemiurgoFacade.getInstance().getService().
+                        getListJarByRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
+            }
+            if (clasButton.isSelected()) {
+                r = DemiurgoFacade.getInstance().getService().
+                        getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
+            }
+            System.out.println("Tamaño de respuesta " + r.length);
+            if (r == null && r.length == 0) {
+                JOptionPane.showMessageDialog(null, "No se encontraron resultados para su busqueda.");
+                return;
+            } else {
+                for (int k = 0; k < r.length; k++) {
+                    modeloGrid.addRow(((IArray) r[k]).toArray());
+                }
+            }
+             buttonSearch.setEnabled(true); 
+             buttonSearch.setCursor(c1);
+            // Fin de thread
+            // se restaura boton.
+        }
+    }
+    //class
 }
