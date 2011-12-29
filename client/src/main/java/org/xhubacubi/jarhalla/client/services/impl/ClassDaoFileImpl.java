@@ -54,10 +54,8 @@ public class ClassDaoFileImpl implements IClassDao {
         List<Clazz> r = new ArrayList<Clazz>();
         String fileT = FileUtil.getWorkDirectory()
                 + File.separatorChar
-                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
-        System.out.println("    ID a buscar " + idRepo);
-        List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);
-        System.out.println("    lineas encontradas " + t.size());
+                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");        
+        List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);        
         Iterator it1 = t.iterator();
         StringBuilder tmp = new StringBuilder();
         while (it1.hasNext()) {
@@ -80,8 +78,7 @@ public class ClassDaoFileImpl implements IClassDao {
         boolean res = false;
         String fileT = FileUtil.getWorkDirectory()
                 + File.separatorChar
-                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
-        System.out.println("El archivo a eliminar es " + fileT);        
+                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");               
         return new File(fileT).delete();
     }
 }

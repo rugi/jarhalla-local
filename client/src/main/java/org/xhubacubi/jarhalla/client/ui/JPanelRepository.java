@@ -83,8 +83,7 @@ public final class JPanelRepository extends JPanel {
                 if (ke.getKeyCode() == KeyEvent.VK_DELETE
                         || ke.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                     int p = listRepos.getSelectedIndex();
-                    if (p >= 0) {
-                        System.out.println("Elemento a borrar " + p);
+                    if (p >= 0) {                        
                         Object[] options = {"Sí",
                             "No"};
                         int n = JOptionPane.showOptionDialog(null,
@@ -98,8 +97,7 @@ public final class JPanelRepository extends JPanel {
 
                         if (n == 0) {
                             List<Repo> r = DemiurgoFacade.getInstance().getService().getListRepo();
-                            String id = r.get(p).getId();
-                            System.out.println("El id a borrar es " + id);
+                            String id = r.get(p).getId();                            
                             DemiurgoFacade.getInstance().getService().deleteRepo(id);
                             //se elimina del modelo
                             reposModel.remove(p);
@@ -207,8 +205,7 @@ public final class JPanelRepository extends JPanel {
                 SearchFilesUtil sfu = new SearchFilesUtil();
                 List<String> jarsPath = sfu.getPathFilesInFolder(this.path, this.pattern);
                 setTotalJars(jarsPath != null ? jarsPath.size() : 0);
-                progress.setIndeterminate(false);
-                System.out.println("Total de jars encontrados " + getTotalJars());
+                progress.setIndeterminate(false);                
                 log.append("Total de jars encontrados " + getTotalJars());
                 log.append("\n");
                 if (getTotalJars() > 0) {
@@ -224,12 +221,7 @@ public final class JPanelRepository extends JPanel {
                                 JOptionPane.QUESTION_MESSAGE,
                                 null,
                                 options,
-                                options[1]);
-                        System.out.println("Respuesta " + n);
-                        System.out.println("El id del repo seleccionado es:"
-                                + DemiurgoFacade.getInstance().
-                                getService().
-                                getRepoByPath(this.path).getId());
+                                options[1]);                        
                         if (n == 0) {
                             //Se recupera id del repositorio
                             idRepo = DemiurgoFacade.getInstance().
@@ -260,8 +252,7 @@ public final class JPanelRepository extends JPanel {
                     while (pathI.hasNext()) {
                         k++;
                         pathS.delete(0, pathS.length());
-                        pathS.append(pathI.next());
-                        System.out.println("Analizando " + pathS.toString());
+                        pathS.append(pathI.next());                       
                         log.append("Analizando " + k + " de " + getTotalJars());
                         log.append("\n");
                         log.append("\t" + pathS.toString());

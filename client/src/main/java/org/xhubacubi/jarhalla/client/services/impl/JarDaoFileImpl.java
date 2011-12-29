@@ -39,8 +39,7 @@ public class JarDaoFileImpl implements IJarDao {
         boolean res = false;
         String fileT = FileUtil.getWorkDirectory()
                 + File.separatorChar
-                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
-        System.out.println("El archivo a borrar es: " + fileT);
+                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");        
         return new File(fileT).delete();
     }
 
@@ -54,10 +53,8 @@ public class JarDaoFileImpl implements IJarDao {
         List<Jarh> r = new ArrayList<Jarh>();
         String fileT = FileUtil.getWorkDirectory()
                 + File.separatorChar
-                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");
-        System.out.println("    ID a buscar " + idRepo);
-        List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);
-        System.out.println("    lineas encontradas " + t.size());
+                + FileUtil.generateNameFile(nameFile, idRepo, "$ID$");        
+        List<String> t = FileUtil.getListFromFileWithPatter(fileT, like);        
         Iterator it1 = t.iterator();
         StringBuilder tmp = new StringBuilder();
         while (it1.hasNext()) {

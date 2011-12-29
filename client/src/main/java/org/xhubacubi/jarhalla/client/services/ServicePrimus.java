@@ -4,7 +4,6 @@
  */
 package org.xhubacubi.jarhalla.client.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.xhubacubi.jarhalla.client.dao.IClassDao;
 import org.xhubacubi.jarhalla.client.dao.IJarDao;

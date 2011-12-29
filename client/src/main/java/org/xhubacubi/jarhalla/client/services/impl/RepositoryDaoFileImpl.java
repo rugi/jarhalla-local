@@ -45,10 +45,8 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
     @Override
     public boolean deleteRepo(String id) {
                 String fileT = FileUtil.getWorkDirectory() + File.separatorChar + nameFile;
-        boolean ready = FileUtil.existOrCreate(fileT);
-        System.out.println("El archivo a limpiar es: "+fileT);
-        List<Repo> temp  = getListRepo() ;
-        System.out.println("Antes de borrar "+ temp);
+        boolean ready = FileUtil.existOrCreate(fileT);        
+        List<Repo> temp  = getListRepo() ;        
         Repo dele = new Repo();
         FileUtil.cleanFile(fileT);
         dele.setId(id);
@@ -57,8 +55,7 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
         while(it4.hasNext()){
             Repo t = it4.next();
            FileUtil.appendFile(fileT, t.getId()+"|"+t.getPath());
-        }
-        System.out.println("Despues de borrar "+temp);
+        }        
        return false;
     }
 
@@ -73,8 +70,7 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
             StringBuilder line = new StringBuilder();
             while(it.hasNext()){
                 line.delete(0,line.length());
-                line.append(it.next().toString());
-                System.out.println("numero de tokens"+line.toString().split("\\|").length);
+                line.append(it.next().toString());                
                 if(line.toString().split("\\|").length>=2){
                     res.add(new Repo(line.toString().split("\\|")[0], line.toString().split("\\|")[1] ));
                 }

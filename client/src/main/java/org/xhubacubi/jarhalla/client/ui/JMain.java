@@ -219,8 +219,7 @@ public class JMain extends JFrame {
             if (clasButton.isSelected()) {
                 r = DemiurgoFacade.getInstance().getService().
                         getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
-            }
-            System.out.println("Tamaño de respuesta " + r.length);
+            }            
             if (r == null && r.length == 0) {
                 JOptionPane.showMessageDialog(null, "No se encontraron resultados para su busqueda.");
                 return;
