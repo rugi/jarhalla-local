@@ -1,0 +1,19 @@
+##################     Version 0.5   #########################
+29 de Diciembre de 2011.
+Coloca los dos jar's en una carpeta.
+Desde dentro de esa carpeta ejecuta:
+Si tienes *nix:
+
+prompt> java -classpath util-1.0-SNAPSHOT.jar:client-0.5.jar:.:  org.xhubacubi.jarhalla.App
+
+Si tienes Windows:
+
+java -classpath util-1.0-SNAPSHOT.jar;client-0.5.jar;.;  org.xhubacubi.jarhalla.App
+
+S’, s’, ya se que el "." es redundante, pero, por si las dudas.
+Esta versi—n tiene lo m’nimo para realizar bœsquedas.
+
+Crea primero un repositorio para poder selecionarlo en el
+combo principal.
+##########################################################
+
