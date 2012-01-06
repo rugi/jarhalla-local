@@ -148,6 +148,7 @@ public final class JPanelRepository extends JPanel {
                 loweredetched, "Repository List:");
         title.setTitleJustification(TitledBorder.LEFT);
         this.setBorder(title);
+        this.add(new JLabel("Se ha detectado"), BorderLayout.SOUTH);
     }
 
     class SearchListener implements ActionListener {

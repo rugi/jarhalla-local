@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this template, choose Tools | Templates and open the template in
  * the editor.
  */
@@ -35,6 +35,15 @@ public class FileUtil {
         return workDirectory;
     }
 
+    public static boolean exist(String fileName) {
+        String dirTarger = fileName;
+        File temp = new File(dirTarger);
+        boolean res = false;
+        if (temp.exists()) {
+            res = true;
+        } 
+        return res;
+    }    
     public static boolean existOrCreate(String fileName) {
         String dirTarger = fileName;
         File temp = new File(dirTarger);

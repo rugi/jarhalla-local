@@ -11,6 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import org.xhubacubi.jarhalla.client.dao.bean.IArray;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
@@ -91,6 +95,22 @@ public class JMain extends JFrame {
         modeloGrid = new SingleTableModel();
 
         grid = new JTable(modeloGrid);
+        grid.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        SelectionListener listener = new SelectionListener();
+grid.getSelectionModel().addListSelectionListener(listener);
+grid.getColumnModel().getSelectionModel()
+    .addListSelectionListener(listener);
+
+//        grid.getModel().addTableModelListener(new TableModelListener() {
+//
+//            @Override
+//            public void tableChanged(TableModelEvent tme) {
+//                System.out.println("get Column" + tme.getColumn());
+//                System.out.println("get getFirstRow" + tme.getFirstRow());
+//                System.out.println("get getLastRow" + tme.getLastRow() );
+//                System.out.println("get getType" + tme.getType() );
+//            }
+//        });
 
         JScrollPane scroll = new JScrollPane(grid);
         //Antes de agregar el tab, lo llenamos
@@ -134,35 +154,16 @@ public class JMain extends JFrame {
         radioPanel.add(clasButton);
 
         tabPanel.add(radioPanel);
+        ActionListener searhActionListener = new searhActionListener();
         labelInput = new JLabelInput("Buscar", "Jar o clase a buscar");
+        labelInput.addActionTextInput(searhActionListener);
         tabPanel.add(labelInput);
 
         updateModelComboRepos();
 
         tabPanel.add(comboRepo);
         buttonSearch = new JButton("Buscar");
-        buttonSearch.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                cleanGrid();
-                if (!clasButton.isSelected() && !jarButton.isSelected()) {
-                    JOptionPane.showMessageDialog(null, "Debe Seleccionar una opcion de busqueda: jar o class");
-                    return;
-                }
-                if (comboRepoModel.getSelectedItem() == null) {
-                    JOptionPane.showMessageDialog(null, "No existe un repositorio seleccionado.");
-                    return;
-                }
-                if (labelInput.getTextInput().trim().length() == 0) {
-                    JOptionPane.showMessageDialog(null, "Debe especificar un criterio de búsqueda.");
-                    return;
-                }               
-            SearchThread st = new SearchThread();
-            (new Thread(st)).start();
-
-            }
-        });
+        buttonSearch.addActionListener(searhActionListener);
         tabPanel.add(buttonSearch);
         tabbed.add("Buscar:", tabPanel);
         //---
@@ -205,8 +206,8 @@ public class JMain extends JFrame {
 
         @Override
         public void run() {
-            
-            buttonSearch.setEnabled(false); 
+
+            buttonSearch.setEnabled(false);
             Cursor c1 = buttonSearch.getCursor();
             buttonSearch.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             Object[] r = null;
@@ -219,7 +220,7 @@ public class JMain extends JFrame {
             if (clasButton.isSelected()) {
                 r = DemiurgoFacade.getInstance().getService().
                         getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
-            }            
+            }
             if (r == null && r.length == 0) {
                 JOptionPane.showMessageDialog(null, "No se encontraron resultados para su busqueda.");
                 return;
@@ -228,11 +229,69 @@ public class JMain extends JFrame {
                     modeloGrid.addRow(((IArray) r[k]).toArray());
                 }
             }
-             buttonSearch.setEnabled(true); 
-             buttonSearch.setCursor(c1);
+            buttonSearch.setEnabled(true);
+            buttonSearch.setCursor(c1);
             // Fin de thread
             // se restaura boton.
         }
     }
     //class
+    
+    
+    
+
+    class SelectionListener implements ListSelectionListener {
+
+
+        // It is necessary to keep the table since it is not possible
+        // to determine the table from the event's source
+        SelectionListener() {
+          super();
+        }
+
+        public void valueChanged(ListSelectionEvent e) {
+            System.out.println("Linea seleccionada."+grid.getSelectedRow());
+            // If cell selection is enabled, both row and column change events are fired
+            if (e.getSource() == grid.getSelectionModel()
+                    && grid.getRowSelectionAllowed()) {
+                // Column selection changed
+                int first = e.getFirstIndex();
+                int last = e.getLastIndex();
+                System.out.println(first + "->" + last);
+            } else if (e.getSource() == grid.getColumnModel().getSelectionModel()
+                    && grid.getColumnSelectionAllowed()) {
+                // Row selection changed
+                int first = e.getFirstIndex();
+                int last = e.getLastIndex();
+                System.out.println(first + "->" + last);
+            }
+
+            if (e.getValueIsAdjusting()) {
+                // The mouse button has not yet been released
+            }
+        }
+    }
+    
+    class searhActionListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+                            cleanGrid();
+                if (!clasButton.isSelected() && !jarButton.isSelected()) {
+                    JOptionPane.showMessageDialog(null, "Debe Seleccionar una opcion de busqueda: jar o class");
+                    return;
+                }
+                if (comboRepoModel.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(null, "No existe un repositorio seleccionado.");
+                    return;
+                }
+                if (labelInput.getTextInput().trim().length() == 0) {
+                    JOptionPane.showMessageDialog(null, "Debe especificar un criterio de búsqueda.");
+                    return;
+                }
+                SearchThread st = new SearchThread();
+                (new Thread(st)).start();
+        }
+    
+    }
 }

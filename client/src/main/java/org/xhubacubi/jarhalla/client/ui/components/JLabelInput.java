@@ -5,6 +5,7 @@
 package org.xhubacubi.jarhalla.client.ui.components;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -50,5 +51,9 @@ public class JLabelInput extends JPanel {
     }
     public String getTextInput(){
         return this.input.getText();
+    }
+    
+    public void addActionTextInput(ActionListener al){
+        this.input.addActionListener(al);
     }
 }
