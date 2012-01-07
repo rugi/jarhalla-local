@@ -13,12 +13,11 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import org.xhubacubi.jarhalla.client.dao.bean.IArray;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.ui.components.JLabelInput;
+import org.xhubacubi.jarhalla.client.ui.components.JViewManifest;
 import org.xhubacubi.jarhalla.client.ui.components.SingleTableModel;
 import org.xhubacubi.jarhalla.client.ui.components.StatusBar;
 import org.xhubacubi.jarhalla.client.util.StringUtil;
@@ -44,13 +43,15 @@ public class JMain extends JFrame {
     private SingleTableModel modeloGrid;
     private JTable grid;
     private JLabelInput labelInput;
-
+    private JSplitPane panelResult;
+    private JViewManifest viewManifest;
     public JMain() {
         super();
         initComponents();
     }
 
     public void initComponents() {
+        viewManifest = new JViewManifest();
         comboRepoModel = new DefaultComboBoxModel();
         //primero el menu
         mIExit = new JMenuItem("Exit",
@@ -97,21 +98,8 @@ public class JMain extends JFrame {
         grid = new JTable(modeloGrid);
         grid.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         SelectionListener listener = new SelectionListener();
-grid.getSelectionModel().addListSelectionListener(listener);
-grid.getColumnModel().getSelectionModel()
-    .addListSelectionListener(listener);
-
-//        grid.getModel().addTableModelListener(new TableModelListener() {
-//
-//            @Override
-//            public void tableChanged(TableModelEvent tme) {
-//                System.out.println("get Column" + tme.getColumn());
-//                System.out.println("get getFirstRow" + tme.getFirstRow());
-//                System.out.println("get getLastRow" + tme.getLastRow() );
-//                System.out.println("get getType" + tme.getType() );
-//            }
-//        });
-
+        grid.getSelectionModel().addListSelectionListener(listener);
+        grid.getColumnModel().getSelectionModel().addListSelectionListener(listener);
         JScrollPane scroll = new JScrollPane(grid);
         //Antes de agregar el tab, lo llenamos
         JPanel tabPanel = new JPanel(new GridLayout(0, 1));
@@ -124,6 +112,7 @@ grid.getColumnModel().getSelectionModel()
             public void actionPerformed(ActionEvent ae) {
                 removeColumns();
                 cleanGrid();
+                viewManifest.clean();
                 modeloGrid.addColumn("Path");
                 modeloGrid.addColumn("Jar");
                 modeloGrid.addColumn("Size");
@@ -139,6 +128,7 @@ grid.getColumnModel().getSelectionModel()
             public void actionPerformed(ActionEvent ae) {
                 removeColumns();
                 cleanGrid();
+                viewManifest.clean();
                 modeloGrid.addColumn("Path");
                 modeloGrid.addColumn("Jar");
                 modeloGrid.addColumn("Class");
@@ -166,11 +156,15 @@ grid.getColumnModel().getSelectionModel()
         buttonSearch.addActionListener(searhActionListener);
         tabPanel.add(buttonSearch);
         tabbed.add("Buscar:", tabPanel);
-        //---
-        //Y ahora el layout.
+        //---        
+        panelResult = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                           scroll, viewManifest);    
+        panelResult.setOneTouchExpandable(true);
+        panelResult.setDividerLocation(250);
+        //Y ahora el layout Final.
         this.setLayout(new BorderLayout());
         this.add(tabbed, BorderLayout.NORTH);
-        this.add(scroll, BorderLayout.CENTER);
+        this.add(panelResult, BorderLayout.CENTER);
         this.add(status, BorderLayout.SOUTH);
     }
 
@@ -236,62 +230,46 @@ grid.getColumnModel().getSelectionModel()
         }
     }
     //class
-    
-    
-    
 
     class SelectionListener implements ListSelectionListener {
-
 
         // It is necessary to keep the table since it is not possible
         // to determine the table from the event's source
         SelectionListener() {
-          super();
+            super();
         }
 
         public void valueChanged(ListSelectionEvent e) {
-            System.out.println("Linea seleccionada."+grid.getSelectedRow());
-            // If cell selection is enabled, both row and column change events are fired
-            if (e.getSource() == grid.getSelectionModel()
-                    && grid.getRowSelectionAllowed()) {
-                // Column selection changed
-                int first = e.getFirstIndex();
-                int last = e.getLastIndex();
-                System.out.println(first + "->" + last);
-            } else if (e.getSource() == grid.getColumnModel().getSelectionModel()
-                    && grid.getColumnSelectionAllowed()) {
-                // Row selection changed
-                int first = e.getFirstIndex();
-                int last = e.getLastIndex();
-                System.out.println(first + "->" + last);
-            }
-
-            if (e.getValueIsAdjusting()) {
-                // The mouse button has not yet been released
+            System.out.println("Linea seleccionada." + grid.getSelectedRow());
+            if (grid.getSelectedRow() >= 0) {
+                int fila = grid.getSelectedRow();
+                System.out.println("Ruta:" + grid.getModel().getValueAt(fila, 0));
+                System.out.println("Nombre del jar:" + grid.getModel().getValueAt(fila, 1));
+                viewManifest.updateData(grid.getModel().getValueAt(fila, 0).toString()+
+                         grid.getModel().getValueAt(fila, 1).toString());
             }
         }
     }
-    
-    class searhActionListener implements ActionListener{
+
+    class searhActionListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-                            cleanGrid();
-                if (!clasButton.isSelected() && !jarButton.isSelected()) {
-                    JOptionPane.showMessageDialog(null, "Debe Seleccionar una opcion de busqueda: jar o class");
-                    return;
-                }
-                if (comboRepoModel.getSelectedItem() == null) {
-                    JOptionPane.showMessageDialog(null, "No existe un repositorio seleccionado.");
-                    return;
-                }
-                if (labelInput.getTextInput().trim().length() == 0) {
-                    JOptionPane.showMessageDialog(null, "Debe especificar un criterio de búsqueda.");
-                    return;
-                }
-                SearchThread st = new SearchThread();
-                (new Thread(st)).start();
+            cleanGrid();
+            if (!clasButton.isSelected() && !jarButton.isSelected()) {
+                JOptionPane.showMessageDialog(null, "Debe Seleccionar una opcion de busqueda: jar o class");
+                return;
+            }
+            if (comboRepoModel.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "No existe un repositorio seleccionado.");
+                return;
+            }
+            if (labelInput.getTextInput().trim().length() == 0) {
+                JOptionPane.showMessageDialog(null, "Debe especificar un criterio de búsqueda.");
+                return;
+            }
+            SearchThread st = new SearchThread();
+            (new Thread(st)).start();
         }
-    
     }
 }
