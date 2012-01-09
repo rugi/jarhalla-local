@@ -13,13 +13,36 @@ import org.xhubacubi.jarhalla.client.dao.bean.Repo;
  */
 public interface IRepositoryDao {
 
+    /**
+     * 
+     * @param path
+     * @return 
+     */
     public String addRepo(String path);
-
+/**
+ * 
+ * @param id
+ * @return 
+ */
     public boolean deleteRepo(String id);
 
+    /**
+     * 
+     * @return 
+     */
     public List<Repo> getListRepo();
 
+    /**
+     * 
+     * @param path
+     * @return 
+     */
     public boolean existRepo(String path);
     
+    /**
+     * 
+     * @param path
+     * @return 
+     */
     public Repo getRepoByPath(String path);
 }

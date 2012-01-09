@@ -18,8 +18,14 @@ import org.xhubacubi.jarhalla.client.util.FileUtil;
  */
 public class RepositoryDaoFileImpl implements IRepositoryDao {
 
+    /**
+     * 
+     */
     private static final String nameFile = "repos.jiva";
 
+    /**
+     * 
+     */
     public RepositoryDaoFileImpl() {
         super();
     }

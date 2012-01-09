@@ -9,5 +9,9 @@ package org.xhubacubi.jarhalla.client.dao.bean;
  * @author rugi
  */
 public interface IArray {
+    /**
+     * 
+     * @return 
+     */
     public Object[] toArray();
 }

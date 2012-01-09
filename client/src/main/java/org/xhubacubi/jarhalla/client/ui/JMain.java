@@ -28,29 +28,87 @@ import org.xhubacubi.jarhalla.client.util.StringUtil;
  */
 public class JMain extends JFrame {
 
+    /**
+     * 
+     */
     private JMenuBar menuBar;
+    /**
+     * 
+     */
     private JMenu mMain;
+    /**
+     * 
+     */
     private JMenu mExit;
+    /**
+     * 
+     */
     private JMenuItem mIExit;
+    /**
+     * 
+     */
     private JMenuItem mConfRepos;
+    /**
+     * 
+     */
     private StatusBar status;
+    /**
+     * 
+     */ 
     private JTabbedPane tabbed;
+    /**
+    * 
+    */
     private DefaultComboBoxModel comboRepoModel;
+    /**
+     * 
+     */
     private JComboBox comboRepo;
+    /**
+     * 
+     */
     private JButton buttonSearch;
+    /**
+     * 
+     */
     private JRadioButton jarButton;
+    /**
+     * 
+     */
     private JRadioButton clasButton;
+    /**
+     * 
+     */
     private SingleTableModel modeloGrid;
+    /**
+     * 
+     */
     private JTable grid;
+    /**
+     * 
+     */
     private JLabelInput labelInput;
+    /**
+     * 
+     */
     private JSplitPane panelResult;
+    /**
+     * 
+     */
     private JViewManifest viewManifest;
+    
+    /**
+     * 
+     */
     public JMain() {
         super();
         initComponents();
     }
 
-    public void initComponents() {
+    /**
+     * 
+     */
+    private void initComponents() {
         viewManifest = new JViewManifest();
         comboRepoModel = new DefaultComboBoxModel();
         //primero el menu

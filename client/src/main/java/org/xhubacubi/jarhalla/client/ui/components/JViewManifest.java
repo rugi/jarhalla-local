@@ -23,21 +23,36 @@ import org.xhubacubi.alicante.core.jar.JarUtil;
  * @author rugi
  */
 public class JViewManifest extends JPanel {
-    //scroll
-
-    JScrollPane scroll;
-    //tabke
+    /**
+     * 
+     */
+    private JScrollPane scroll;
+    
+    /**
+     * 
+     */
     private JTable grid;
-    //modelo
+    /**
+     * 
+     */
     private SingleTableModel modeloGrid;
 
-    TitledBorder title;
+    /**
+     * 
+     */
+    private TitledBorder title;
     
+    /**
+     * 
+     */
     public JViewManifest() {
         super();                
         initComponents();
     }
 
+    /**
+     * 
+     */
     private void initComponents() {
         title = BorderFactory.createTitledBorder("Propiedades del Manifest.");
         this.setBorder(title);
@@ -50,6 +65,9 @@ public class JViewManifest extends JPanel {
         this.add(scroll, BorderLayout.CENTER);
     }
 
+    /**
+     * 
+     */
     private void cleanGrid() {
         int p = grid.getRowCount();
         for (int k = 0; k < p; k++) {
@@ -57,9 +75,16 @@ public class JViewManifest extends JPanel {
         }
     }
 
+    /**
+     * 
+     */
     public void clean(){
         this.cleanGrid();
     }
+    /**
+     * 
+     * @param path 
+     */
     public void updateData(String path) {
         SetValueThread sdt = new SetValueThread(path);
         (new Thread(sdt)).start();
@@ -97,8 +122,7 @@ public class JViewManifest extends JPanel {
                         while (llavesAt.hasNext()) {
                             res2.delete(0, res2.length());
                             res2.append(llavesAt.next());
-                            System.out.println("[" + res.toString().toUpperCase() + "]: " + res2.toString());
-                            System.out.println("    valor: " + at.getValue(res2.toString()));
+                            //TODO meter un StringBuilder
                             Object[] row = new Object[2];
                             row[0] = "[" + res.toString().toUpperCase() + "]: " + res2.toString();
                             row[1] = at.getValue(res2.toString());
@@ -110,6 +134,7 @@ public class JViewManifest extends JPanel {
             } catch (IOException ex) {
                 System.out.println("Excepcion JViewManifest " + ex);
             }
+            //TODO limpiar objetos
         }
     }
 }

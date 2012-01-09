@@ -19,10 +19,22 @@ import org.xhubacubi.jarhalla.client.dao.bean.Repo;
  */
 public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
 
-    IClassDao clazz;
-    IJarDao jar;
-    IRepositoryDao repo;
+    /**
+     * 
+     */
+    private IClassDao clazz;
+    /**
+     * 
+     */
+    private IJarDao jar;
+    /**
+     * 
+     */
+    private IRepositoryDao repo;
 
+    /**
+     * 
+     */
     public ServicePrimus(IRepositoryDao repo, IJarDao jar, IClassDao clazz) {
         this.clazz = clazz;
         this.jar = jar;

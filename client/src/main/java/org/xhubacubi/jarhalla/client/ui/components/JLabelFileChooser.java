@@ -18,18 +18,40 @@ import javax.swing.JTextField;
  */
 public class JLabelFileChooser extends JPanel {
 
+    /**
+     * 
+     */
     private JTextField input;
+    /**
+     * 
+     */
     private JFileChooser chooser;
+    /**
+     * 
+     */
     private JButton button;
 
+    /**
+     * 
+     */
     public JLabelFileChooser() {
         this("");
     }
 
+    /**
+     * 
+     * @param input 
+     */
     public JLabelFileChooser(String input) {
         this(new BorderLayout(), new JTextField(input), new JFileChooser());
     }
 
+    /**
+     * 
+     * @param layout
+     * @param input
+     * @param chooser 
+     */
     private JLabelFileChooser(BorderLayout layout,
             JTextField input,
             JFileChooser chooser) {
@@ -41,6 +63,9 @@ public class JLabelFileChooser extends JPanel {
         initComponents();
     }
 
+    /**
+     * 
+     */
     private void initComponents() {
         button = new JButton("[...]");
         button.setToolTipText("Seleccione el directorio.");
@@ -61,15 +86,25 @@ public class JLabelFileChooser extends JPanel {
         this.validate();
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getDirectory() {
         return this.input.getText() == null ? "" : this.input.getText().trim();
     }
 
+    /**
+     * 
+     */
     public void enabledComponents() {
         this.input.setEnabled(true);
         this.button.setEnabled(true);
     }
 
+    /**
+     * 
+     */
     public void disabledComponents() {
         this.input.setEnabled(false);
         this.button.setEnabled(false);

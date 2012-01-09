@@ -4,21 +4,33 @@
  */
 package org.xhubacubi.jarhalla.client.dao.bean;
 
-import java.util.Date;
-
 /**
  *
  * @author rugi
  */
 public class Repo {
 
+    /**
+     * 
+     */
     private String id;
+    /**
+     * 
+     */
     private String path;
 
+    /**
+     * 
+     */
     public Repo() {
         this("", "");
     }
 
+    /**
+     * 
+     * @param id
+     * @param path 
+     */
     public Repo(String id, String path) {
         super();
         this.path = path;
@@ -39,6 +51,10 @@ public class Repo {
         this.path = path;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String toString() {
         return this.path;
     }

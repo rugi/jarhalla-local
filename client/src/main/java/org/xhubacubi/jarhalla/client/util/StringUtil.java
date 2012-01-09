@@ -10,6 +10,11 @@ package org.xhubacubi.jarhalla.client.util;
  */
 public class StringUtil {
 
+    /**
+     * 
+     * @param input
+     * @return 
+     */
     public static String generatePattern(String input) {
         StringBuilder res = new StringBuilder();
         if (!input.startsWith("*")) {

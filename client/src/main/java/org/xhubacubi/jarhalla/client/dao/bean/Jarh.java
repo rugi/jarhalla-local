@@ -12,12 +12,30 @@ import java.util.Date;
  */
 public class Jarh implements IArray {
 
+    /**
+     * 
+     */
     private String idRepo;
+    /**
+     * 
+     */
     private String pathJar;
+    /**
+     * 
+     */
     private String jarName;
+    /**
+     * 
+     */
     private int size;
+    /**
+     * 
+     */
     private long dateLastModif;
 
+    /**
+     * 
+     */
     public Jarh() {
         super();
     }

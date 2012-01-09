@@ -10,12 +10,26 @@ package org.xhubacubi.jarhalla.client.dao.bean;
  */
 public class Clazz implements IArray {
 
+    /**
+     * 
+     */
     private String idRepo;
+    /**
+     * 
+     */
     private String pathJar;
+    /**
+     * 
+     */
     private String jarName;
+    /**
+     * 
+     */
     private String className;
 
-    
+    /**
+     * 
+     */
     public Clazz(){
         super();
     }
@@ -63,6 +77,10 @@ public class Clazz implements IArray {
         this.idRepo = idRepo;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public Object[] toArray() {
         Object [] r = new  Object [3];

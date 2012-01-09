@@ -31,27 +31,78 @@ import org.xhubacubi.jarhalla.client.ui.components.JLabelFileChooser;
  */
 public final class JPanelRepository extends JPanel {
 
+    /**
+     * 
+     */
     private JScrollPane scrollRepos;
+    /**
+     * 
+     */
     private JList listRepos;
+    /**
+     * 
+     */
     private DefaultListModel reposModel;
+    /*
+     * 
+     */
     private JSplitPane split;
+    /**
+     * 
+     */
     private Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+    /**
+     * 
+     */
     private TitledBorder title;
+    /**
+     * 
+     */
     private TitledBorder titleDir;
+    /**
+     * 
+     */
     private TitledBorder titleLog;
+    /**
+     * 
+     */
     private JScrollPane scrollLog;
+    /**
+     * 
+     */
     private JTextArea log;
+    /**
+     * 
+     */
     private JProgressBar progress;
+    /**
+     * 
+     */
     private JPanel panelDetail;
+    /**
+     * 
+     */
     private JPanel panelSelect;
+    /**
+     * 
+     */
     private JButton buttonSearch;
+    /**
+     * 
+     */
     private JLabelFileChooser chooserDir;
 
+    /**
+     * 
+     */
     public JPanelRepository() {
         super();
         initComponents();
     }
 
+    /**
+     * 
+     */
     private void updateReposList() {
         reposModel.removeAllElements();
         List<Repo> r = DemiurgoFacade.getInstance().getService().getListRepo();
@@ -61,7 +112,10 @@ public final class JPanelRepository extends JPanel {
         }
     }
 
-    public void initComponents() {
+    /**
+     * 
+     */
+    private void initComponents() {
         this.setLayout(new BorderLayout());
         reposModel = new DefaultListModel();
         updateReposList();

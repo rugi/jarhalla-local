@@ -20,6 +20,10 @@ public class StatusBar extends JLabel {
         setMessage("Ready");
     }
     
+    /**
+     * 
+     * @param message 
+     */
     public void setMessage(String message) {
         setText(" "+message);        
     }        

@@ -18,6 +18,12 @@ import org.xhubacubi.jarhalla.client.util.FileUtil;
  */
 public class ClassDaoFileImpl implements IClassDao {
 
+    public ClassDaoFileImpl(){
+        super();
+    }
+    /**
+     * 
+     */
     private static final String nameFile = "repo_$ID$_class.jiva";
 
     @Override

@@ -13,10 +13,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class SingleTableModel extends DefaultTableModel {
 
+    /**
+     * 
+     */
     public SingleTableModel() {
         super();
     }
 
+    /**
+     * 
+     * @param columnIndex 
+     */
     public void removeColumn(int columnIndex) {
         for (int r = 0; r < getRowCount(); r++) {
             Vector row = (Vector) dataVector.elementAt(r);

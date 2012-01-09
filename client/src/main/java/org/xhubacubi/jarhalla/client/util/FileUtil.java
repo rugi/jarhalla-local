@@ -15,12 +15,23 @@ import java.util.List;
  */
 public class FileUtil {
 
+    /**
+     * 
+     */
     private static final String DirectoryName = ".jarhalla";
 
+    /**
+     * 
+     * @return 
+     */
     public static String getUserHomeDirectory() {
         return System.getProperty("user.home").toString();
     }
 
+    /**
+     * 
+     * @return 
+     */
     public static String getWorkDirectory() {
         //validamos
         String workDirectory = getUserHomeDirectory() + File.separatorChar + DirectoryName;
@@ -35,6 +46,11 @@ public class FileUtil {
         return workDirectory;
     }
 
+    /**
+     * 
+     * @param fileName
+     * @return 
+     */
     public static boolean exist(String fileName) {
         String dirTarger = fileName;
         File temp = new File(dirTarger);
@@ -43,7 +59,13 @@ public class FileUtil {
             res = true;
         } 
         return res;
-    }    
+    }  
+    
+    /**
+     * 
+     * @param fileName
+     * @return 
+     */
     public static boolean existOrCreate(String fileName) {
         String dirTarger = fileName;
         File temp = new File(dirTarger);
@@ -60,6 +82,13 @@ public class FileUtil {
         return res;
     }
 
+    
+    /**
+     * 
+     * @param fileName
+     * @param line
+     * @return 
+     */
     public static boolean appendFile(String fileName, String line) {
         boolean res = true;
         try {
@@ -73,6 +102,12 @@ public class FileUtil {
         return res;
     }
 
+    
+    /**
+     * 
+     * @param fileName
+     * @return 
+     */
     public static boolean cleanFile(String fileName) {
         boolean res = true;
         try {
@@ -83,8 +118,15 @@ public class FileUtil {
             res = false;
         }
         return res;
-    }    
+    }  
     
+    
+    /**
+     * 
+     * @param fileName
+     * @param lines
+     * @return 
+     */
     public static boolean appendFile(String fileName, List<Object> lines) {
         boolean res = true;
         try {
@@ -130,6 +172,13 @@ public class FileUtil {
         return r;
     }
     
+    /**
+     * 
+     * @param nameFile
+     * @param idRepo
+     * @param sufix
+     * @return 
+     */
     public static String generateNameFile(String nameFile, String idRepo, String sufix) {
         return nameFile.replace(sufix, idRepo);
     }    

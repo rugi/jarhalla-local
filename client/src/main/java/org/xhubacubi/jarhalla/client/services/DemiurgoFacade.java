@@ -14,9 +14,18 @@ import org.xhubacubi.jarhalla.client.services.impl.RepositoryDaoFileImpl;
  */
 public class DemiurgoFacade {
 
+    /**
+     * 
+     */
     private static DemiurgoFacade instance;
+    /**
+     * 
+     */
     private ServicePrimus service;
 
+    /**
+     * 
+     */
     private DemiurgoFacade() {
         super();
         this.service = new ServicePrimus(new RepositoryDaoFileImpl(),
@@ -24,6 +33,10 @@ public class DemiurgoFacade {
                 new ClassDaoFileImpl());
     }
 
+    /**
+     * 
+     * @return 
+     */
     public static DemiurgoFacade getInstance() {
         if (instance == null) {
             instance = new DemiurgoFacade();
