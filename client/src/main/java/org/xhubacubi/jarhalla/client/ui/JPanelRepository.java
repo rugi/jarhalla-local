@@ -5,10 +5,7 @@
 package org.xhubacubi.jarhalla.client.ui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -24,6 +21,7 @@ import org.xhubacubi.alicante.core.jar.JarUtil;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.ui.components.JLabelFileChooser;
+import org.xhubacubi.jarhalla.client.util.FileUtil;
 
 /**
  *
@@ -91,6 +89,11 @@ public final class JPanelRepository extends JPanel {
      * 
      */
     private JLabelFileChooser chooserDir;
+    
+    /**
+     * 
+     */
+    private JLabel status;
 
     /**
      * 
@@ -117,6 +120,13 @@ public final class JPanelRepository extends JPanel {
      */
     private void initComponents() {
         this.setLayout(new BorderLayout());
+        status = new JLabel("Se ha detectado al menos un repositorio de codigo que puede ser indexado. Click para mas detalle.");
+        getDirectorys();
+        status.addMouseListener(new MouseAdapter() {
+         public void mousePressed(MouseEvent me) { 
+            System.out.println(me); 
+          }            
+        });
         reposModel = new DefaultListModel();
         updateReposList();
         listRepos = new JList(reposModel);
@@ -202,7 +212,28 @@ public final class JPanelRepository extends JPanel {
                 loweredetched, "Repository List:");
         title.setTitleJustification(TitledBorder.LEFT);
         this.setBorder(title);
-        this.add(new JLabel("Se ha detectado"), BorderLayout.SOUTH);
+        //TODO meter la seleccion de carpetas.
+        this.add(status, BorderLayout.SOUTH);
+    }
+
+    private void getDirectorys() {
+        if(FileUtil.existMaven2Directory()){
+            System.out.println(FileUtil.getMaven2Directory());
+        }else{
+            System.out.println("No encontre carpeta m2");
+        }        
+        if(FileUtil.existIvyDirectory()){
+            System.out.println(FileUtil.getIvyDirectory());
+        }else{
+            System.out.println("No encontre carpeta ivy");
+        }
+        
+        if(FileUtil.existGradleDirectory()){
+            System.out.println(FileUtil.getGradleDirectory());
+        }else{
+            System.out.println("No encontre carpeta Gradle");
+        }        
+        
     }
 
     class SearchListener implements ActionListener {

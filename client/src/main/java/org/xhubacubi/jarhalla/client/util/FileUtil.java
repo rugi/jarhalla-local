@@ -18,8 +18,24 @@ public class FileUtil {
     /**
      * 
      */
-    private static final String DirectoryName = ".jarhalla";
+    private static final String DIRECTORY_NAME = ".jarhalla";
 
+    /**
+     * 
+     */
+    private static final String DIRECTORY_MAVEN = ".m2";    
+    
+    /**
+     * 
+     */
+    private static final String DIRECTORY_IVY = ".ivy2";    
+    
+    
+    /**
+     * 
+     */
+    private static final String DIRECTORY_GRADLE = ".gradle";       
+    
     /**
      * 
      * @return 
@@ -34,7 +50,7 @@ public class FileUtil {
      */
     public static String getWorkDirectory() {
         //validamos
-        String workDirectory = getUserHomeDirectory() + File.separatorChar + DirectoryName;
+        String workDirectory = getUserHomeDirectory() + File.separatorChar + DIRECTORY_NAME;
         File temp = new File(workDirectory);
         if (!temp.exists()) {
             boolean res = temp.mkdir();
@@ -182,4 +198,48 @@ public class FileUtil {
     public static String generateNameFile(String nameFile, String idRepo, String sufix) {
         return nameFile.replace(sufix, idRepo);
     }    
+    
+    
+    public static String getMaven2Directory(){
+        return new StringBuilder().append(getUserHomeDirectory()).
+                append(File.separatorChar).append(DIRECTORY_MAVEN).toString();
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public static String getIvyDirectory(){
+        return new StringBuilder().append(getUserHomeDirectory()).
+                append(File.separatorChar).append(DIRECTORY_IVY).toString();
+    } 
+    
+    public static String getGradleDirectory(){
+        return new StringBuilder().append(getUserHomeDirectory()).
+                append(File.separatorChar).append(DIRECTORY_GRADLE).toString();
+    }     
+    /**
+     * 
+     * @return 
+     */
+    public static boolean existMaven2Directory(){
+        return exist (getMaven2Directory());        
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public static boolean existIvyDirectory(){
+        return exist (getIvyDirectory());        
+    }    
+    
+    /**
+     * 
+     * @return 
+     */
+    public static boolean existGradleDirectory(){
+        return exist (getGradleDirectory());        
+    }       
+        
 }
