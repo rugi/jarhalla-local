@@ -93,6 +93,10 @@ public class JLabelFileChooser extends JPanel {
     public String getDirectory() {
         return this.input.getText() == null ? "" : this.input.getText().trim();
     }
+    
+    public void setDirectory(String d){
+        this.input.setText(d);
+    }
 
     /**
      * 

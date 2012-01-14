@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +22,7 @@ import org.xhubacubi.alicante.core.jar.JarUtil;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.ui.components.JLabelFileChooser;
+import org.xhubacubi.jarhalla.client.ui.components.JSelectRepoPanel;
 import org.xhubacubi.jarhalla.client.util.FileUtil;
 
 /**
@@ -30,73 +32,72 @@ import org.xhubacubi.jarhalla.client.util.FileUtil;
 public final class JPanelRepository extends JPanel {
 
     /**
-     * 
+     *
      */
     private JScrollPane scrollRepos;
     /**
-     * 
+     *
      */
     private JList listRepos;
     /**
-     * 
+     *
      */
     private DefaultListModel reposModel;
     /*
-     * 
+     *
      */
     private JSplitPane split;
     /**
-     * 
+     *
      */
     private Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
     /**
-     * 
+     *
      */
     private TitledBorder title;
     /**
-     * 
+     *
      */
     private TitledBorder titleDir;
     /**
-     * 
+     *
      */
     private TitledBorder titleLog;
     /**
-     * 
+     *
      */
     private JScrollPane scrollLog;
     /**
-     * 
+     *
      */
     private JTextArea log;
     /**
-     * 
+     *
      */
     private JProgressBar progress;
     /**
-     * 
+     *
      */
     private JPanel panelDetail;
     /**
-     * 
+     *
      */
     private JPanel panelSelect;
     /**
-     * 
+     *
      */
     private JButton buttonSearch;
     /**
-     * 
+     *
      */
     private JLabelFileChooser chooserDir;
-    
     /**
-     * 
+     *
      */
     private JLabel status;
 
     /**
-     * 
+     *
      */
     public JPanelRepository() {
         super();
@@ -104,7 +105,7 @@ public final class JPanelRepository extends JPanel {
     }
 
     /**
-     * 
+     *
      */
     private void updateReposList() {
         reposModel.removeAllElements();
@@ -116,17 +117,33 @@ public final class JPanelRepository extends JPanel {
     }
 
     /**
-     * 
+     *
      */
     private void initComponents() {
         this.setLayout(new BorderLayout());
-        status = new JLabel("Se ha detectado al menos un repositorio de codigo que puede ser indexado. Click para mas detalle.");
-        getDirectorys();
-        status.addMouseListener(new MouseAdapter() {
-         public void mousePressed(MouseEvent me) { 
-            System.out.println(me); 
-          }            
-        });
+        status = new JLabel();
+        final List<String> dirs = getDirectorys();
+        if (dirs.size() == 0) {
+            status.setText("Listo");
+        } else {
+            status.setText("Se ha detectado al menos un repositorio de codigo que puede ser indexado. Click para mas detalle.");                        
+            status.addMouseListener(new MouseAdapter() {
+
+                public void mousePressed(MouseEvent me) {
+                    JDialog jdialog = new JDialog(SwingUtilities.getWindowAncestor(status));
+                    jdialog.setSize(300, 150);
+                    JSelectRepoPanel selector = new JSelectRepoPanel(dirs);
+                    jdialog.setContentPane(selector);
+                    jdialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    jdialog.setModal(true);
+                    jdialog.setVisible(true);                    
+                    if (selector.getSelectedOption() != null) {
+                        chooserDir.setDirectory(selector.getSelectedOption().toString());
+                        buttonSearch.doClick();
+                    }
+                }
+            });
+        }
         reposModel = new DefaultListModel();
         updateReposList();
         listRepos = new JList(reposModel);
@@ -147,7 +164,7 @@ public final class JPanelRepository extends JPanel {
                 if (ke.getKeyCode() == KeyEvent.VK_DELETE
                         || ke.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                     int p = listRepos.getSelectedIndex();
-                    if (p >= 0) {                        
+                    if (p >= 0) {
                         Object[] options = {"Sí",
                             "No"};
                         int n = JOptionPane.showOptionDialog(null,
@@ -161,7 +178,7 @@ public final class JPanelRepository extends JPanel {
 
                         if (n == 0) {
                             List<Repo> r = DemiurgoFacade.getInstance().getService().getListRepo();
-                            String id = r.get(p).getId();                            
+                            String id = r.get(p).getId();
                             DemiurgoFacade.getInstance().getService().deleteRepo(id);
                             //se elimina del modelo
                             reposModel.remove(p);
@@ -216,24 +233,47 @@ public final class JPanelRepository extends JPanel {
         this.add(status, BorderLayout.SOUTH);
     }
 
-    private void getDirectorys() {
-        if(FileUtil.existMaven2Directory()){
-            System.out.println(FileUtil.getMaven2Directory());
-        }else{
+    private List<String> getDirectorys() {
+        List<String> r = new ArrayList<String>();
+        if (FileUtil.existMaven2Directory()) {            
+            //ahora, validar si existe en los repositorios.
+            if (DemiurgoFacade.getInstance().getService().existRepo(FileUtil.getMaven2Directory())) {
+                System.out.println("El repositorio ya está indexado.");
+            } else {
+                //Por ahora est es el caso que manejaremos
+                // Debe mostrarse como opcion a indexar.
+                System.out.println("Se agrera sugerencia de repositorio" + FileUtil.getMaven2Directory());
+                r.add(FileUtil.getMaven2Directory());
+            }
+        } else {
             System.out.println("No encontre carpeta m2");
-        }        
-        if(FileUtil.existIvyDirectory()){
-            System.out.println(FileUtil.getIvyDirectory());
-        }else{
+        }
+        if (FileUtil.existIvyDirectory()) {            
+            if (DemiurgoFacade.getInstance().getService().existRepo(FileUtil.getIvyDirectory())) {
+                System.out.println("El repositorio ya está indexado.");
+            } else {
+                //Por ahora est es el caso que manejaremos
+                // Debe mostrarse como opcion a indexar.
+                System.out.println("Se agrera sugerencia de repositorio" + FileUtil.getIvyDirectory());
+                r.add(FileUtil.getIvyDirectory());
+            }
+        } else {
             System.out.println("No encontre carpeta ivy");
         }
-        
-        if(FileUtil.existGradleDirectory()){
-            System.out.println(FileUtil.getGradleDirectory());
-        }else{
+
+        if (FileUtil.existGradleDirectory()) {            
+            if (DemiurgoFacade.getInstance().getService().existRepo(FileUtil.getGradleDirectory())) {
+                System.out.println("El repositorio ya está indexado.");
+            } else {
+                //Por ahora est es el caso que manejaremos
+                // Debe mostrarse como opcion a indexar.
+                System.out.println("Se agrera sugerencia de repositorio" + FileUtil.getGradleDirectory());
+                r.add(FileUtil.getGradleDirectory());
+            }
+        } else {
             System.out.println("No encontre carpeta Gradle");
-        }        
-        
+        }
+        return r;
     }
 
     class SearchListener implements ActionListener {
@@ -291,11 +331,11 @@ public final class JPanelRepository extends JPanel {
                 SearchFilesUtil sfu = new SearchFilesUtil();
                 List<String> jarsPath = sfu.getPathFilesInFolder(this.path, this.pattern);
                 setTotalJars(jarsPath != null ? jarsPath.size() : 0);
-                progress.setIndeterminate(false);                
+                progress.setIndeterminate(false);
                 log.append("Total de jars encontrados " + getTotalJars());
                 log.append("\n");
                 if (getTotalJars() > 0) {
-                    String idRepo = null;                    
+                    String idRepo = null;
                     if (DemiurgoFacade.getInstance().getService().existRepo(this.path)) {
                         Object[] options = {"Sí",
                             "No"};
@@ -307,7 +347,7 @@ public final class JPanelRepository extends JPanel {
                                 JOptionPane.QUESTION_MESSAGE,
                                 null,
                                 options,
-                                options[1]);                        
+                                options[1]);
                         if (n == 0) {
                             //Se recupera id del repositorio
                             idRepo = DemiurgoFacade.getInstance().
@@ -317,7 +357,7 @@ public final class JPanelRepository extends JPanel {
                                     + idRepo);
                             // se elimnan los archivos.                             
                             boolean deleteClass = DemiurgoFacade.getInstance().
-                                    getService().deleteClassByIdRepo(idRepo);                           
+                                    getService().deleteClassByIdRepo(idRepo);
                             boolean deleteJar = DemiurgoFacade.getInstance().
                                     getService().deleteJarByRepo(idRepo);
                         } else {
@@ -338,7 +378,7 @@ public final class JPanelRepository extends JPanel {
                     while (pathI.hasNext()) {
                         k++;
                         pathS.delete(0, pathS.length());
-                        pathS.append(pathI.next());                       
+                        pathS.append(pathI.next());
                         log.append("Analizando " + k + " de " + getTotalJars());
                         log.append("\n");
                         log.append("\t" + pathS.toString());
@@ -371,6 +411,7 @@ public final class JPanelRepository extends JPanel {
                     log.append("\n");
                     updateReposList();
                     JOptionPane.showMessageDialog(null, "Ha concluido el análisis de la carpeta.");
+                    SwingUtilities.getWindowAncestor(scrollRepos).dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "No se encontraon JARs.");
                     return;
