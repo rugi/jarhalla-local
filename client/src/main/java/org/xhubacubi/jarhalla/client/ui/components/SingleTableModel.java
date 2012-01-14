@@ -14,15 +14,15 @@ import javax.swing.table.DefaultTableModel;
 public class SingleTableModel extends DefaultTableModel {
 
     /**
-     * 
+     *
      */
     public SingleTableModel() {
         super();
     }
 
     /**
-     * 
-     * @param columnIndex 
+     *
+     * @param columnIndex
      */
     public void removeColumn(int columnIndex) {
         for (int r = 0; r < getRowCount(); r++) {
@@ -31,5 +31,11 @@ public class SingleTableModel extends DefaultTableModel {
         }
         columnIdentifiers.removeElementAt(columnIndex);
         fireTableStructureChanged();
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        // set table column uneditable
+        return false;
     }
 }

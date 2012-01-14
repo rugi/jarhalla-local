@@ -121,12 +121,13 @@ public final class JPanelRepository extends JPanel {
      */
     private void initComponents() {
         this.setLayout(new BorderLayout());
-        status = new JLabel();
+        
         final List<String> dirs = getDirectorys();
-        if (dirs.size() == 0) {
-            status.setText("Listo");
+        if (dirs.isEmpty()) {
+            status = new JLabel("Listo");            
         } else {
-            status.setText("Se ha detectado al menos un repositorio de codigo que puede ser indexado. Click para mas detalle.");                        
+            status = new JLabel("Se ha detectado al menos un repositorio de"
+                    + " codigo que puede ser indexado. Click para mas detalle.");                       
             status.addMouseListener(new MouseAdapter() {
 
                 public void mousePressed(MouseEvent me) {
