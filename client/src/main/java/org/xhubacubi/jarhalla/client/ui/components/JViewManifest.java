@@ -10,10 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import org.xhubacubi.alicante.core.jar.JarUtil;
 
@@ -42,6 +39,12 @@ public class JViewManifest extends JPanel {
      */
     private TitledBorder title;
     
+    
+    private JLabel nameJar;
+    /**
+     * 
+     */
+    private JLabel status;
     /**
      * 
      */
@@ -56,13 +59,18 @@ public class JViewManifest extends JPanel {
     private void initComponents() {
         title = BorderFactory.createTitledBorder("Propiedades del Manifest.");
         this.setBorder(title);
+        status = new JLabel("Listo.");
+        nameJar = new JLabel();
         modeloGrid = new SingleTableModel();
+        modeloGrid.setEditable(false);
         grid = new JTable(modeloGrid);
         scroll = new JScrollPane(grid);
         modeloGrid.addColumn("Propiedad");
         modeloGrid.addColumn("Valor:");
         this.setLayout(new BorderLayout());
+        this.add(nameJar, BorderLayout.NORTH);
         this.add(scroll, BorderLayout.CENTER);
+        this.add(status, BorderLayout.SOUTH);
     }
 
     /**
@@ -79,13 +87,16 @@ public class JViewManifest extends JPanel {
      * 
      */
     public void clean(){
+        this.nameJar.setText("");
         this.cleanGrid();
+        this.status.setText("Listo");
     }
     /**
      * 
      * @param path 
      */
     public void updateData(String path) {
+        this.nameJar.setText(path);
         SetValueThread sdt = new SetValueThread(path);
         (new Thread(sdt)).start();
     }
@@ -101,22 +112,20 @@ public class JViewManifest extends JPanel {
 
         @Override
         public void run() {
-            try {
-                System.out.println(">>>> Iniciando con " + path);
+            try {                
                 cleanGrid();
                 JarUtil j = new JarUtil(path);
                 // if m != null
                 Manifest m = j.getManifest();
+                int k = 0;
                 if (m != null) {
-                    Map map = m.getEntries();
-                    System.out.println("Entradas de " + path + "  " + map.size());
+                    Map map = m.getEntries();                    
                     Iterator it = map.keySet().iterator();
                     StringBuilder res = new StringBuilder();
                     StringBuilder res2 = new StringBuilder();
                     while (it.hasNext()) {
                         res.delete(0, res.length());
-                        res.append(it.next());
-                        System.out.println("llave " + res.toString());
+                        res.append(it.next());                        
                         Attributes at = (Attributes) map.get(res.toString());
                         Iterator llavesAt = at.keySet().iterator();
                         while (llavesAt.hasNext()) {
@@ -127,10 +136,11 @@ public class JViewManifest extends JPanel {
                             row[0] = "[" + res.toString().toUpperCase() + "]: " + res2.toString();
                             row[1] = at.getValue(res2.toString());
                             modeloGrid.addRow(row);
+                            k++;
                         }
                     }
                 }
-                System.out.println(">>>> Terminando con " + path);
+                status.setText(k+" propiedades encontradas.");                
             } catch (IOException ex) {
                 System.out.println("Excepcion JViewManifest " + ex);
             }

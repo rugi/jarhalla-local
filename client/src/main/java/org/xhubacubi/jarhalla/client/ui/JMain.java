@@ -152,7 +152,7 @@ public class JMain extends JFrame {
         //El tab superior
         tabbed = new JTabbedPane();
         modeloGrid = new SingleTableModel();
-
+        modeloGrid.setEditable(false);
         grid = new JTable(modeloGrid);
         grid.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         SelectionListener listener = new SelectionListener();
@@ -170,6 +170,7 @@ public class JMain extends JFrame {
             public void actionPerformed(ActionEvent ae) {
                 removeColumns();
                 cleanGrid();
+                status.setText("Listo");
                 viewManifest.clean();
                 modeloGrid.addColumn("Path");
                 modeloGrid.addColumn("Jar");
@@ -186,6 +187,7 @@ public class JMain extends JFrame {
             public void actionPerformed(ActionEvent ae) {
                 removeColumns();
                 cleanGrid();
+                status.setText("Listo");
                 viewManifest.clean();
                 modeloGrid.addColumn("Path");
                 modeloGrid.addColumn("Jar");
@@ -258,7 +260,7 @@ public class JMain extends JFrame {
 
         @Override
         public void run() {
-
+            int j = 0;
             buttonSearch.setEnabled(false);
             Cursor c1 = buttonSearch.getCursor();
             buttonSearch.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -273,16 +275,18 @@ public class JMain extends JFrame {
                 r = DemiurgoFacade.getInstance().getService().
                         getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
             }
-            if (r == null && r.length == 0) {
+            if (r == null || r.length == 0) {
                 JOptionPane.showMessageDialog(null, "No se encontraron resultados para su busqueda.");
                 return;
             } else {
+                j = r.length;
                 for (int k = 0; k < r.length; k++) {
                     modeloGrid.addRow(((IArray) r[k]).toArray());
                 }
             }
             buttonSearch.setEnabled(true);
             buttonSearch.setCursor(c1);
+            status.setText("Total de resultados:"+j);
             // Fin de thread
             // se restaura boton.
         }
@@ -297,12 +301,13 @@ public class JMain extends JFrame {
             super();
         }
 
+        @Override
         public void valueChanged(ListSelectionEvent e) {
             System.out.println("Linea seleccionada." + grid.getSelectedRow());
             if (grid.getSelectedRow() >= 0) {
                 int fila = grid.getSelectedRow();
-                System.out.println("Ruta:" + grid.getModel().getValueAt(fila, 0));
-                System.out.println("Nombre del jar:" + grid.getModel().getValueAt(fila, 1));
+                //System.out.println("Ruta:" + grid.getModel().getValueAt(fila, 0));
+                //System.out.println("Nombre del jar:" + grid.getModel().getValueAt(fila, 1));
                 viewManifest.updateData(grid.getModel().getValueAt(fila, 0).toString()+
                          grid.getModel().getValueAt(fila, 1).toString());
             }

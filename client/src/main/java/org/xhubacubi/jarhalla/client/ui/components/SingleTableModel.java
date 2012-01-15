@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class SingleTableModel extends DefaultTableModel {
 
+    private boolean editable = true;
     /**
      *
      */
@@ -36,6 +37,20 @@ public class SingleTableModel extends DefaultTableModel {
     @Override
     public boolean isCellEditable(int row, int column) {
         // set table column uneditable
-        return false;
+        return editable;
+    }
+
+    /**
+     * @return the editable
+     */
+    public boolean isEditable() {
+        return editable;
+    }
+
+    /**
+     * @param editable the editable to set
+     */
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 }

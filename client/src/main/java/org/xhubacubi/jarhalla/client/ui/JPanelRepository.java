@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -125,11 +126,12 @@ public final class JPanelRepository extends JPanel {
         final List<String> dirs = getDirectorys();
         if (dirs.isEmpty()) {
             status = new JLabel("Listo");            
-        } else {
+        } else {            
             status = new JLabel("Se ha detectado al menos un repositorio de"
-                    + " codigo que puede ser indexado. Click para mas detalle.");                       
+                    + " codigo que puede ser indexado. Click para mas detalle.");   
             status.addMouseListener(new MouseAdapter() {
 
+                @Override
                 public void mousePressed(MouseEvent me) {
                     JDialog jdialog = new JDialog(SwingUtilities.getWindowAncestor(status));
                     jdialog.setSize(300, 150);
