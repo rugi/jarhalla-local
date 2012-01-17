@@ -205,7 +205,7 @@ public class JMain extends JFrame {
 
         tabPanel.add(radioPanel);
         ActionListener searhActionListener = new searhActionListener();
-        labelInput = new JLabelInput("Buscar", "Jar o clase a buscar");
+        labelInput = new JLabelInput("Buscar", "");
         labelInput.addActionTextInput(searhActionListener);
         tabPanel.add(labelInput);
 
@@ -276,8 +276,7 @@ public class JMain extends JFrame {
                         getListClassByIdRepoAndLike(((Repo) comboRepoModel.getSelectedItem()).getId(), searchText).toArray();
             }
             if (r == null || r.length == 0) {
-                JOptionPane.showMessageDialog(null, "No se encontraron resultados para su busqueda.");
-                return;
+                JOptionPane.showMessageDialog(null, "No se encontraron resultados para su busqueda.");                
             } else {
                 j = r.length;
                 for (int k = 0; k < r.length; k++) {
