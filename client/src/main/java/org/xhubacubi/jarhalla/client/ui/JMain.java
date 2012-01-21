@@ -114,7 +114,7 @@ public class JMain extends JFrame {
         //primero el menu
         mIExit = new JMenuItem("Exit",
                 KeyEvent.VK_E);
-        mConfRepos = new JMenuItem("Repositorys",
+        mConfRepos = new JMenuItem("Repositorios",
                 KeyEvent.VK_R);
         mExit = new JMenu("Exit");
         mExit.setMnemonic(KeyEvent.VK_X);
