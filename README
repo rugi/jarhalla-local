@@ -5,3 +5,12 @@ El layout principal:
 LayoutPrincipal.png
 
 Lenguaje a usar: Java 1.6
+El codigo fuente se encuentra como proyecto maven en la carpeta client/
+
+Si unicamente quieres ejecutar la aplicacion, puedes ir a la carpeta standAlone/
+Ahi ire colocando las versiones.
+
+Espero te sea de utilida.
+
+RuGI
+Isaac Ruiz Guerra.
