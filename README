@@ -1,4 +1,4 @@
-Cliente para bœsqueda de Jars y clases existentes dentro
+Cliente para busqueda de Jars y clases existentes dentro
 del sistema de archivos local.
 
 El layout principal:
@@ -10,7 +10,7 @@ El codigo fuente se encuentra como proyecto maven en la carpeta client/
 Si unicamente quieres ejecutar la aplicacion, puedes ir a la carpeta standAlone/
 Ahi ire colocando las versiones.
 
-Espero te sea de utilida.
+Espero te sea de utilidad.
 
 RuGI
 Isaac Ruiz Guerra.
