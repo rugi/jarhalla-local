@@ -6,7 +6,13 @@ LayoutPrincipal.png
 
 Lenguaje a usar: Java 1.6
 El codigo fuente se encuentra como proyecto maven en la carpeta client/
+El proyecto hace uso de un artefacto que puedes encontrar aqui:
+    https://github.com/rugi/alicante
 
+Para ejecutar:
+    mvn exec:java -Dexec.mainClass="org.xhubacubi.jarhalla.App"
+
+-----
 Si unicamente quieres ejecutar la aplicacion, puedes ir a la carpeta standAlone/
 Ahi ire colocando las versiones.
 

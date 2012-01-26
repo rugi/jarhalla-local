@@ -4,11 +4,11 @@ Coloca los dos jar's en una carpeta.
 Desde dentro de esa carpeta ejecuta:
 Si tienes *nix:
 
-prompt> java -classpath util-1.0-SNAPSHOT.jar:client-0.9.jar:.:  org.xhubacubi.jarhalla.App
+	java -classpath util-1.0-SNAPSHOT.jar:client-0.9.jar:.:  org.xhubacubi.jarhalla.App
 
 Si tienes Windows:
 
-java -classpath util-1.0-SNAPSHOT.jar;client-0.9.jar;.;  org.xhubacubi.jarhalla.App
+	java -classpath util-1.0-SNAPSHOT.jar;client-0.9.jar;.;  org.xhubacubi.jarhalla.App
 
 Si, si, ya se que el "." es redundante, pero, por si las dudas.
 Esta versión tiene lo mínimo para realizar búsquedas.
