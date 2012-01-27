@@ -11,6 +11,7 @@ import java.util.List;
 import jline.ArgumentCompletor;
 import jline.ConsoleReader;
 import jline.SimpleCompletor;
+import org.xhubacubi.jarhalla.client.cli.util.ConsoleUtil;
 
 /**
  * 
@@ -19,9 +20,10 @@ import jline.SimpleCompletor;
  */
 public class Shell {
 	private String[] commandsList;
-
+        private ConsoleUtil console ;
 	public void init() {
-		commandsList = new String[] { "help", "action1", "action2", "exit" };
+		commandsList = new String[] { "help", "status", "searchJar", "searchClass", "addRepo","deleteRepo", "setResultSize", "listRepos" ,"exit" };
+                console = new ConsoleUtil();
 	}
 
 	public void run() throws IOException {
@@ -39,8 +41,8 @@ public class Shell {
 		while ((line = readLine(reader, "")) != null) {
 			if ("help".equals(line)) {
 				help();
-			} else if ("action1".equals(line)) {
-				System.out.println("You have selection action1");
+			} else if ("status".equals(line)) {
+				console.status();
 			} else if ("action2".equals(line)) {
 				System.out.println("You have selection action2");
 			} else if ("exit".equals(line)) {
