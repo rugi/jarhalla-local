@@ -22,7 +22,7 @@ public class Shell {
 	private String[] commandsList;
         private ConsoleUtil console ;
 	public void init() {
-		commandsList = new String[] { "help", "status", "searchJar", "searchClass", "addRepo","deleteRepo", "setResultSize", "listRepos" ,"exit" };
+		commandsList = new String[] { "help", "status", "searchJar", "searchClass", "addRepo","deleteRepo", "resultSize","showRepos", "listRepos" ,"exit" };
                 console = new ConsoleUtil();
 	}
 
@@ -43,8 +43,8 @@ public class Shell {
 				help();
 			} else if ("status".equals(line)) {
 				console.status();
-			} else if ("action2".equals(line)) {
-				System.out.println("You have selection action2");
+			} else if ("showRepos".equals(line)) {
+				console.showRepos();
 			} else if ("exit".equals(line)) {
 				System.out.println("Exiting application");
 				return;
