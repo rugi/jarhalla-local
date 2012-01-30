@@ -15,6 +15,41 @@ import org.xhubacubi.jarhalla.client.util.FileUtil;
  */
 public class ConsoleUtil {
 
+    public void delete(String command) {
+        System.out.println("[deleteRepo]----------------------------------------------------");
+        String[] tokens = command.split(" ");
+        String idRepo = null;        
+        //si es un solo token mostramos ayuda
+        if (tokens.length == 1) {
+            System.out.println("[deleteRepo]deleteRepo:");
+            System.out.println("[deleteRepo]           Elimina un repositorio.");
+            System.out.println("[deleteRepo]                  deleteRepo <id_repo>");
+            System.out.println("[deleteRepo]Donde: ");
+            System.out.println("[deleteRepo]           <id_repo> es el identificador  del repositorio a borrar.");
+            System.out.println("[deleteRepo]           Para ver los repositorios disponibles use el comando: <<showRepos>>");
+            System.out.println("[deleteRepo]----------------------------------------------------");
+            return;
+        }
+        if (tokens.length > 2) {            
+            System.out.println("[deleteRepo]Se recibieron mas parametros de los disponibles. ");
+            System.out.println("[deleteRepo]Se toma el requerido y se ignora el resto ");
+        }
+        idRepo = tokens[2];
+        Repo repo = DemiurgoFacade.getInstance().getService().getRepoById(idRepo);
+        if (repo != null) {
+            System.out.println("[deleteRepo]    Eliminando respositorio con identificador: " + idRepo);
+            System.out.println("[deleteRepo]             " + repo.getPath());
+            boolean res = DemiurgoFacade.getInstance().getService().deleteRepo(idRepo);
+            if(res){
+                System.out.println("[deleteRepo]    Repositorio eliminado: "+idRepo);
+            }else{
+            }
+        } else {
+            System.out.println("[deleteRepo]  El repositorio indicado no existe:" + idRepo);
+        }
+        System.out.println("[deleteRepo]----------------------------------------------------");
+    }
+
     public void status() {
         System.out.println("[status]----------------------------------------------------");
         System.out.println("[status]Carpeta de almacenamiento (user.home)..:" + FileUtil.getWorkDirectory());

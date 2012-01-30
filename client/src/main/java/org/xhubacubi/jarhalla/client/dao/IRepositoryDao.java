@@ -45,4 +45,12 @@ public interface IRepositoryDao {
      * @return 
      */
     public Repo getRepoByPath(String path);
+    /**
+     * 
+     * @param path
+     * @return 
+     */
+    public Repo getRepoById(String id);    
+    
+    
 }

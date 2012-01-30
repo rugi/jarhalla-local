@@ -113,4 +113,9 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
     public boolean deleteClassByIdRepo(String idRepo) {
         return this.clazz.deleteClassByIdRepo(idRepo);
     }
+
+    @Override
+    public Repo getRepoById(String id) {
+        return this.repo.getRepoById(id);
+    }
 }

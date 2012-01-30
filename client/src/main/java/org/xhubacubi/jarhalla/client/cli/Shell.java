@@ -22,7 +22,7 @@ public class Shell {
 	private String[] commandsList;
         private ConsoleUtil console ;
 	public void init() {
-		commandsList = new String[] { "help", "status", "searchJar", "searchClass", "addRepo","deleteRepo", "resultSize","showRepos", "listRepos" ,"exit" };
+		commandsList = new String[] { "help" ,"showRepos", "status", "searchJar", "searchClass", "addRepo","deleteRepo", "resultSize" ,"exit" };
                 console = new ConsoleUtil();
 	}
 
@@ -41,7 +41,9 @@ public class Shell {
 		while ((line = readLine(reader, "")) != null) {
 			if ("help".equals(line)) {
 				help();
-			} else if ("status".equals(line)) {
+			} else if(line.toLowerCase().startsWith("deleterepo")){                        
+                            console.delete(line);
+                        }else if ("status".equals(line)) {
 				console.status();
 			} else if ("showRepos".equals(line)) {
 				console.showRepos();
@@ -50,7 +52,7 @@ public class Shell {
 				return;
 			} else {
 				System.out
-						.println("Comando no reconocdo, "
+						.println("Comando no reconocido, "
                                                  + "Para ver los comandos disponibles pulsa TAB. Pulsa \"help\" seguido de ENTER.");
 			}
 			out.flush();

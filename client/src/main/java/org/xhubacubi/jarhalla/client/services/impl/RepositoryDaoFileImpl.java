@@ -115,4 +115,21 @@ public class RepositoryDaoFileImpl implements IRepositoryDao {
         }       
        return res;
     }
+
+    @Override
+    public Repo getRepoById(String id) {
+       Repo res = null;      
+        List<Repo> t =   getListRepo();
+        Iterator<Repo> it1= t.iterator();
+        while(it1.hasNext()){
+            Repo r = it1.next();
+            if(r.getId().equals(id)){
+                res = new Repo();
+                res.setId(r.getId());
+                res.setPath(r.getPath());
+                break;
+            }
+        }       
+       return res;       
+    }
 }
