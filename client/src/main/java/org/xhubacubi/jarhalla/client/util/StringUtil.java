@@ -26,4 +26,14 @@ public class StringUtil {
         }
         return res.toString();
     }
+    
+    public static int toInt(String s, int d){
+        int res;
+        try{
+            res = Integer.parseInt(s);
+        }catch(Exception e){
+            res = d;
+        }
+        return res;
+    }
 }

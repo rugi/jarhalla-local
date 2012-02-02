@@ -8,17 +8,46 @@ import java.util.List;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.util.FileUtil;
+import org.xhubacubi.jarhalla.client.util.StringUtil;
 
 /**
  *
  * @author rugi
  */
 public class ConsoleUtil {
+    private static final int INIT_SIZE= 100;
+    private int resultSize = INIT_SIZE;
+    public void resultSize(String command) {
+        System.out.println("[resultSize]----------------------------------------------------");
+        String[] tokens = command.split("=");
+        if (tokens.length == 2) {
+            int v = StringUtil.toInt(tokens[1].trim(), INIT_SIZE);
+            System.out.println("[resultSize] Estableciendo el valor a: "+v);
+            resultSize = v;
+        } else {
+            if(tokens.length >2){
+                System.out.println("[resultSize]Demasiados parametros.  ");
+                System.out.println("[resultSize]");
+            }
+            if (tokens.length == 1) {
+                System.out.println("[resultSize]resultSize:");
+                System.out.println("[resultSize]             valor actual :" + resultSize);
+                System.out.println("[resultSize]");
+                System.out.println("[resultSize] Muestra o establece la cantidad de resultados que "
+                        + "se mostrara en cada busqueda.");
+                System.out.println("[resultSize] resultSize=<valor>");
+                System.out.println("[resultSize]Donde: ");
+               System.out.println("[resultSize]     <valor> es una cantidad entera. ");
+               System.out.println("[resultSize]     Si <valor> no cumple con la condición, se usa el valor por default: "+INIT_SIZE);
+            }
+        }
+        System.out.println("[resultSize]----------------------------------------------------");
+    }
 
     public void delete(String command) {
         System.out.println("[deleteRepo]----------------------------------------------------");
         String[] tokens = command.split(" ");
-        String idRepo = null;        
+        String idRepo = null;
         //si es un solo token mostramos ayuda
         if (tokens.length == 1) {
             System.out.println("[deleteRepo]deleteRepo:");
@@ -30,7 +59,7 @@ public class ConsoleUtil {
             System.out.println("[deleteRepo]----------------------------------------------------");
             return;
         }
-        if (tokens.length > 2) {            
+        if (tokens.length > 2) {
             System.out.println("[deleteRepo]Se recibieron mas parametros de los disponibles. ");
             System.out.println("[deleteRepo]Se toma el requerido y se ignora el resto ");
         }
@@ -40,9 +69,9 @@ public class ConsoleUtil {
             System.out.println("[deleteRepo]    Eliminando respositorio con identificador: " + idRepo);
             System.out.println("[deleteRepo]             " + repo.getPath());
             boolean res = DemiurgoFacade.getInstance().getService().deleteRepo(idRepo);
-            if(res){
-                System.out.println("[deleteRepo]    Repositorio eliminado: "+idRepo);
-            }else{
+            if (res) {
+                System.out.println("[deleteRepo]    Repositorio eliminado: " + idRepo);
+            } else {
             }
         } else {
             System.out.println("[deleteRepo]  El repositorio indicado no existe:" + idRepo);
