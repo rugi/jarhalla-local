@@ -90,8 +90,8 @@ public class ServicePrimus implements IClassDao, IJarDao, IRepositoryDao {
     }
 
     @Override
-    public List<Jarh> getListJarByRepoAndLike(String path, String like) {
-        return this.jar.getListJarByRepoAndLike(path, like);
+    public List<Jarh> getListJarByRepoAndLike(String idRepo, String like) {
+        return this.jar.getListJarByRepoAndLike(idRepo, like);
     }
 
     @Override
