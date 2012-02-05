@@ -55,6 +55,8 @@ public class Shell {
                             console.search(line,"searchJar");
                         }else if(line.toLowerCase().startsWith("resultsize")){                        
                             console.resultSize(line);
+                        }else if(line.toLowerCase().startsWith("addrepo")){                        
+                            console.addRepo(line);
                         } else if(line.toLowerCase().startsWith("deleterepo")){                        
                             console.delete(line);
                         }else if ("status".equals(line)) {

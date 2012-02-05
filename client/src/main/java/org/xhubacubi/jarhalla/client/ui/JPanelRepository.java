@@ -123,7 +123,7 @@ public final class JPanelRepository extends JPanel {
     private void initComponents() {
         this.setLayout(new BorderLayout());
         
-        final List<String> dirs = getDirectorys();
+        final List<String> dirs = getDirectorysTools();
         if (dirs.isEmpty()) {
             status = new JLabel("Listo");            
         } else {            
@@ -236,7 +236,7 @@ public final class JPanelRepository extends JPanel {
         this.add(status, BorderLayout.SOUTH);
     }
 
-    private List<String> getDirectorys() {
+    private List<String> getDirectorysTools() {
         List<String> r = new ArrayList<String>();
         if (FileUtil.existMaven2Directory()) {            
             //ahora, validar si existe en los repositorios.
