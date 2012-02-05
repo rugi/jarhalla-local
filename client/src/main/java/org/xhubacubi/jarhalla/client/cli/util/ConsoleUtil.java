@@ -74,8 +74,9 @@ public class ConsoleUtil {
         if (jarsPath.size() > 0) {
             idRepo = DemiurgoFacade.getInstance().getService().addRepo(dir);
         } else {
+            buscando = false;
             System.out.println("[addRepo] No existen jars en esta ruta: " + dir);
-            System.out.println("[addRepo]----------------------------------------------------");
+            System.out.println("[addRepo]----------------------------------------------------");            
             return;
         }
         int k = 0;
