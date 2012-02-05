@@ -7,6 +7,7 @@ package org.xhubacubi.jarhalla.client.cli.util;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.xhubacubi.jarhalla.client.dao.bean.IArray;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
 import org.xhubacubi.jarhalla.client.ui.JMain;
@@ -23,38 +24,64 @@ public class ConsoleUtil {
     private int resultSize = INIT_SIZE;
     private boolean buscando = false;
 
-    public void searchJar(String command) {
-        System.out.println("[searchJar]----------------------------------------------------");
+    public void search(String command, String type) {
+        System.out.println("["+type+"]----------------------------------------------------");
         String[] tokens = command.split("\\s+");
         if (tokens.length == 1) {
-            showInfoSearch("searchJar", "Jars", "axis2.jar, WSDL*.jar, *conn*, etc");
+            if(type.equals("searchJar")){
+                showInfoSearch(type, "Jars", "axis2.jar, WSDL*.jar, *conn*, etc");
+            }
+            if(type.equals("searchClass")){
+                showInfoSearch(type, "Class's", "org.apache*.xml, *xmlbeans* , etc");
+            }
             return;
         }
         if (tokens.length > 1) {
             if (validaSintaxis(command)) {
                 //validamos repo
                 String query = tokens[1].trim();
-                String idRepo = tokens[3].trim();
-                System.out.println("Repo: " + idRepo);
+                String idRepo = tokens[3].trim();                
                 Repo repo = DemiurgoFacade.getInstance().getService().getRepoById(idRepo);
                 if (repo == null) {
-                    System.out.println("[searchJar]   El repositorio que indicas "
+                    System.out.println("["+type+"]   El repositorio que indicas "
                             + idRepo + ": No existe");
-                    System.out.println("[searchJar]");
-                    System.out.println("[searchJar]     Revisa los repositorios existentes con: showRepos");
+                    System.out.println("["+type+"]");
+                    System.out.println("["+type+"]     Revisa los repositorios existentes con: showRepos");
                 } else {
-                    System.out.println("[searchJar] Buscando: " + query);
-                    System.out.println("[searchJar] En      : " + repo.getPath());
+                    System.out.println("["+type+"] Buscando: " + query);
+                    System.out.println("["+type+"] En      : " + repo.getPath());
                     int k = 0;
                     Object[] r = null;
                     buscando = true;
                     SearchTaskThread st = new SearchTaskThread();
                     (new Thread(st)).start();
-                    r = DemiurgoFacade.getInstance().getService().
-                            getListJarByRepoAndLike(idRepo, StringUtil.generatePattern(query.trim())).toArray();
+                    if(type.equals("searchJar")){
+                        r = DemiurgoFacade.getInstance().getService().
+                            getListJarByRepoAndLike(idRepo, StringUtil.
+                                generatePattern(query.trim())).toArray();
+                    }
+                    if(type.equals("searchClass")){
+                        r = DemiurgoFacade.getInstance().getService().
+                                getListClassByIdRepoAndLike(idRepo, StringUtil.
+                                generatePattern(query.trim())).toArray();                            
+                    
+                    }
                     buscando = false;
-                    System.out.println("[searchJar]  Busqueda Terminada. Resultados: "+ r.length);
-
+                    System.out.println("["+type+"]  Busqueda Terminada. Resultados: "+ r.length);                    
+                    if(r.length>0){
+                        System.out.println("["+type+"]  Se muestran unicamente los primeros "+resultSize +" resultados.");
+                        
+                        for (int i = 0; i < resultSize; i++) {
+                            System.out.print("["+type+"] {"+(i+1)+"}");
+                            Object [] o = ((IArray) r[i]).toArray();
+                                System.out.println(o[0]);                                
+                                System.out.println("\t\t"+o[1]);
+                                System.out.println("\t\t\t"+o[2]);                                
+                                o=null;
+                        }
+                    }else{
+                        System.out.println("["+type+"]  Intente mejorando el criterio de busqueda");
+                    }
                 }
             } else {
                 System.out.println("[searchJar]     Sintaxis no reconocida.");

@@ -49,8 +49,10 @@ public class Shell {
 		while ((line = readLine(reader, "")) != null) {                    
 			if ("help".equals(line)) {
 				help();
-			}else if(line.toLowerCase().startsWith("searchjar")){                        
-                            console.searchJar(line);
+			}else if(line.toLowerCase().startsWith("searchclass")){                        
+                            console.search(line,"searchClass");
+                        }else if(line.toLowerCase().startsWith("searchjar")){                        
+                            console.search(line,"searchJar");
                         }else if(line.toLowerCase().startsWith("resultsize")){                        
                             console.resultSize(line);
                         } else if(line.toLowerCase().startsWith("deleterepo")){                        
