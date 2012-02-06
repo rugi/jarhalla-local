@@ -240,6 +240,45 @@ public class FileUtil {
      */
     public static boolean existGradleDirectory(){
         return exist (getGradleDirectory());        
-    }       
+    }
+    
+    public static long getSizeFile(String file) {
+        long r = -1;
+        if (file == null || file.trim().length() == 0) {
+            r = -1;
+        } else {
+            File f = new File(file);
+            if (f.exists()) {
+                r = f.length();
+            } else {
+                r = -1;
+            }
+        }
+        return r;
+    }
+    
+    public static long getSizeDirectory(String dir){
+    
+          long r = -1;
+        if (dir == null || dir.trim().length() == 0) {
+            r = -1;
+        } else {
+            File f = new File(dir);
+            if (f.exists()) {
+               if(f.isDirectory()){
+                   File[] fs = f.listFiles();                   
+                   for (int i = 0; i < fs.length; i++) {                       
+                       r+=fs[i].length();
+                   }
+               }else{
+                   //es archivo.
+                   r = f.length();
+               }
+            } else {
+                r = -1;
+            }
+        }
+        return r;  
+    }
         
 }

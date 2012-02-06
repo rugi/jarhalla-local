@@ -15,7 +15,6 @@ import org.xhubacubi.alicante.core.jar.JarUtil;
 import org.xhubacubi.jarhalla.client.dao.bean.IArray;
 import org.xhubacubi.jarhalla.client.dao.bean.Repo;
 import org.xhubacubi.jarhalla.client.services.DemiurgoFacade;
-import org.xhubacubi.jarhalla.client.ui.JMain;
 import org.xhubacubi.jarhalla.client.util.FileUtil;
 import org.xhubacubi.jarhalla.client.util.StringUtil;
 
@@ -301,9 +300,13 @@ public class ConsoleUtil {
 
     public void status() {
         System.out.println("[status]----------------------------------------------------");
-        System.out.println("[status]Carpeta de almacenamiento (user.home)..:" + FileUtil.getWorkDirectory());
-        System.out.println("[status]Total de Repositorios..................:"
+        System.out.println("[status]Carpeta de almacenamiento (user.home)........:" + FileUtil.getWorkDirectory());
+        System.out.println("[status]Total de Repositorios........................:"
                 + DemiurgoFacade.getInstance().getService().getListRepo().size());
+        System.out.println("[status]Espacio en disco utilizado hasta el momento..:" + 
+           Math.ceil(( (FileUtil.getSizeDirectory(FileUtil.getWorkDirectory()))/1024)/1024)
+                +" Mb");
+
         System.out.println("[status]----------------------------------------------------");
     }
 
@@ -370,4 +373,18 @@ public class ConsoleUtil {
         }
     }
     //---
+    
+	public void help() {             
+		System.out.println("help                - Show help");
+		System.out.println("status              - Muestra informacion relevante sobre jarhalla-local.");
+                System.out.println("addRepo             - Agrega un directorio como repositorio.");
+                System.out.println("showRepos           - Muestra los repositorios disponibles.");
+                System.out.println("deleteRepo          - Elimina un repositorio. Util para reindexar un directorio.");
+		System.out.println("resultSize          - Define la cantidad minima de resultados a mostrar por cada busqueda.");
+                System.out.println("searchJar           - Realiza busquedas de jars en alguno de los repositorios.");
+                System.out.println("searchClass         - Realiza busquedas de Clases en alguno de los repositorios.");
+		System.out.println("exit                - Exit the app");
+
+	}
+    
 }

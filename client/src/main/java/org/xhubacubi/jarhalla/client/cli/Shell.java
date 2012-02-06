@@ -82,14 +82,14 @@ public class Shell {
 	}
 
 	private void help() {             
-		System.out.println("help		- Show help");
-		System.out.println("status		- Muestra nformacion relevante sobre jarhalla-local.");
-                System.out.println("addRepo		- Agrega un directorio como repositorio.");
-                System.out.println("showRepos		- Muestra los repositorios disponibles.");
-                System.out.println("deleteRepo		- Elimina un repositorio. Util para reindexar un directorio.");
-		System.out.println("resultSize		- Define la cantidad minima de resultados a mostrar por cada busqueda.");
-                System.out.println("searchJar		- Realiza busquedas de jars en alguno de los repositorios.");
-                System.out.println("searchClass		- Realiza busquedas de Clases en alguno de los repositorios.");
+		System.out.println("help                - Show help");
+		System.out.println("status              - Muestra informacion relevante sobre jarhalla-local.");
+                System.out.println("addRepo             - Agrega un directorio como repositorio.");
+                System.out.println("showRepos           - Muestra los repositorios disponibles.");
+                System.out.println("deleteRepo          - Elimina un repositorio. Util para reindexar un directorio.");
+		System.out.println("resultSize          - Define la cantidad minima de resultados a mostrar por cada busqueda.");
+                System.out.println("searchJar           - Realiza busquedas de jars en alguno de los repositorios.");
+                System.out.println("searchClass         - Realiza busquedas de Clases en alguno de los repositorios.");
 		System.out.println("exit                - Exit the app");
 
 	}
