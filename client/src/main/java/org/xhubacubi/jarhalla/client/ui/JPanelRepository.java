@@ -8,7 +8,6 @@ import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -378,6 +377,7 @@ public final class JPanelRepository extends JPanel {
                     int k = 0;
                     Iterator<String> pathI = jarsPath.iterator();
                     StringBuilder pathS = new StringBuilder();
+                    JarUtil ju = new JarUtil();
                     while (pathI.hasNext()) {
                         k++;
                         pathS.delete(0, pathS.length());
@@ -386,30 +386,32 @@ public final class JPanelRepository extends JPanel {
                         log.append("\n");
                         log.append("\t" + pathS.toString());
                         log.append("\n");
-
-                        //TODO esto no me late, debo modificar la clase JarUtil.
-                        JarUtil ju = new JarUtil(pathS.toString());
-
-                        //se van grabando los jars
-                        String nameJar = new File(pathS.toString()).getName();
-                        String pathJar = pathS.toString().substring(0, pathS.toString().length() - nameJar.length());
-                        DemiurgoFacade.getInstance().getService().
-                                addJar(idRepo,
-                                pathJar,
-                                nameJar,
-                                ju.getSize(), ju.getLastModif());
-                        List<String> clazz = ju.getClassInside();
-                        log.append("\t\t Total de clases encontradas " + clazz.size());
-                        log.append("\n");
-                        // se graban las clases
-                        DemiurgoFacade.getInstance().getService().
-                                addClass(idRepo,
-                                pathJar,
-                                nameJar,
-                                clazz);
-                        progress.setValue(k);
-                        ju = null;
+                        ju.setSourceFile(pathS.toString());
+                        //solo se procesan los archivos válidos.
+                        if (ju.isValid()) {
+                            //se van grabando los jars
+                            String nameJar = new File(pathS.toString()).getName();
+                            String pathJar = pathS.toString().substring(0, pathS.toString().length() - nameJar.length());
+                            DemiurgoFacade.getInstance().getService().
+                                    addJar(idRepo,
+                                    pathJar,
+                                    nameJar,
+                                    ju.getSize(), ju.getLastModif());
+                            List<String> clazz = ju.getClassInside();
+                            log.append("\t\t Total de clases encontradas " + clazz.size());
+                            log.append("\n");
+                            // se graban las clases
+                            DemiurgoFacade.getInstance().getService().
+                                    addClass(idRepo,
+                                    pathJar,
+                                    nameJar,
+                                    clazz);
+                        }else{
+                            log.append("\t\t El archivo no pudo ser procesado. Cero Clases agregadas.");
+                        }
+                        progress.setValue(k);                        
                     }
+                    ju = null;
                     log.append("Analisis concluido");
                     log.append("\n");
                     updateReposList();

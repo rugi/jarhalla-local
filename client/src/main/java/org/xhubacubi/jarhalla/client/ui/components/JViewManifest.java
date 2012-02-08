@@ -14,47 +14,44 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import org.xhubacubi.alicante.core.jar.JarUtil;
 
-
 /**
  *
  * @author rugi
  */
 public class JViewManifest extends JPanel {
+
     /**
-     * 
+     *
      */
     private JScrollPane scroll;
-    
     /**
-     * 
+     *
      */
     private JTable grid;
     /**
-     * 
+     *
      */
     private SingleTableModel modeloGrid;
-
     /**
-     * 
+     *
      */
     private TitledBorder title;
-    
-    
     private JLabel nameJar;
     /**
-     * 
+     *
      */
     private JLabel status;
+
     /**
-     * 
+     *
      */
     public JViewManifest() {
-        super();                
+        super();
         initComponents();
     }
 
     /**
-     * 
+     *
      */
     private void initComponents() {
         title = BorderFactory.createTitledBorder("Propiedades del Manifest.");
@@ -74,26 +71,29 @@ public class JViewManifest extends JPanel {
     }
 
     /**
-     * 
+     *
      */
     private void cleanGrid() {
         int p = grid.getRowCount();
         for (int k = 0; k < p; k++) {
-            modeloGrid.removeRow(0);
+            if (modeloGrid.getRowCount() > 0) {
+                modeloGrid.removeRow(0);
+            }
         }
     }
 
     /**
-     * 
+     *
      */
-    public void clean(){
+    public void clean() {
         this.nameJar.setText("");
         this.cleanGrid();
         this.status.setText("Listo");
     }
+
     /**
-     * 
-     * @param path 
+     *
+     * @param path
      */
     public void updateData(String path) {
         this.nameJar.setText(path);
@@ -112,35 +112,36 @@ public class JViewManifest extends JPanel {
 
         @Override
         public void run() {
-            try {                
+            try {
                 cleanGrid();
-                JarUtil j = new JarUtil(path);
-                // if m != null
-                Manifest m = j.getManifest();
                 int k = 0;
-                if (m != null) {
-                    Map map = m.getEntries();                    
-                    Iterator it = map.keySet().iterator();
-                    StringBuilder res = new StringBuilder();
-                    StringBuilder res2 = new StringBuilder();
-                    while (it.hasNext()) {
-                        res.delete(0, res.length());
-                        res.append(it.next());                        
-                        Attributes at = (Attributes) map.get(res.toString());
-                        Iterator llavesAt = at.keySet().iterator();
-                        while (llavesAt.hasNext()) {
-                            res2.delete(0, res2.length());
-                            res2.append(llavesAt.next());
-                            //TODO meter un StringBuilder
-                            Object[] row = new Object[2];
-                            row[0] = "[" + res.toString().toUpperCase() + "]: " + res2.toString();
-                            row[1] = at.getValue(res2.toString());
-                            modeloGrid.addRow(row);
-                            k++;
+                JarUtil j = new JarUtil(path);
+                if (j.isValid()) {
+                    Manifest m = j.getManifest();
+                    if (m != null) {
+                        Map map = m.getEntries();
+                        Iterator it = map.keySet().iterator();
+                        StringBuilder res = new StringBuilder();
+                        StringBuilder res2 = new StringBuilder();
+                        while (it.hasNext()) {
+                            res.delete(0, res.length());
+                            res.append(it.next());
+                            Attributes at = (Attributes) map.get(res.toString());
+                            Iterator llavesAt = at.keySet().iterator();
+                            while (llavesAt.hasNext()) {
+                                res2.delete(0, res2.length());
+                                res2.append(llavesAt.next());
+                                //TODO meter un StringBuilder
+                                Object[] row = new Object[2];
+                                row[0] = "[" + res.toString().toUpperCase() + "]: " + res2.toString();
+                                row[1] = at.getValue(res2.toString());
+                                modeloGrid.addRow(row);
+                                k++;
+                            }
                         }
-                    }
-                }
-                status.setText(k+" propiedades encontradas.");                
+                    }//if . manifest
+                }// if valid
+                status.setText(k + " propiedades encontradas.");
             } catch (IOException ex) {
                 System.out.println("Excepcion JViewManifest " + ex);
             }

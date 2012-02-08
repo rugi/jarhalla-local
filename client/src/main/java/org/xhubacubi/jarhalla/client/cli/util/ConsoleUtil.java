@@ -75,12 +75,13 @@ public class ConsoleUtil {
         } else {
             buscando = false;
             System.out.println("[addRepo] No existen jars en esta ruta: " + dir);
-            System.out.println("[addRepo]----------------------------------------------------");            
+            System.out.println("[addRepo]----------------------------------------------------");
             return;
         }
         int k = 0;
         Iterator<String> pathI = jarsPath.iterator();
         StringBuilder pathS = new StringBuilder();
+        JarUtil ju = new JarUtil();
         while (pathI.hasNext()) {
             k++;
             pathS.delete(0, pathS.length());
@@ -89,33 +90,35 @@ public class ConsoleUtil {
             System.out.println("[addRepo]\n");
             System.out.println("[addRepo]\t" + pathS.toString());
             System.out.println("[addRepo]\n");
-
-            //TODO esto no me late, debo modificar la clase JarUtil.
-            JarUtil ju = new JarUtil(pathS.toString());
-
-            //se van grabando los jars
-            String nameJar = new File(pathS.toString()).getName();
-            String pathJar = pathS.toString().substring(0, pathS.toString().length() - nameJar.length());
-            DemiurgoFacade.getInstance().getService().
-                    addJar(idRepo,
-                    pathJar,
-                    nameJar,
-                    ju.getSize(), ju.getLastModif());
-            List<String> clazz = ju.getClassInside();
-            System.out.println("[addRepo]\t\t Total de clases encontradas " + clazz.size());
-            System.out.println("[addRepo]\n");
-            // se graban las clases
-            DemiurgoFacade.getInstance().getService().
-                    addClass(idRepo,
-                    pathJar,
-                    nameJar,
-                    clazz);
-            ju = null;
+            ju.setSourceFile(pathS.toString());
+            //se van grabando los jars. 
+            //solo si es un jar valido.
+            if (ju.isValid()) {
+                String nameJar = new File(pathS.toString()).getName();
+                String pathJar = pathS.toString().substring(0, pathS.toString().length() - nameJar.length());
+                DemiurgoFacade.getInstance().getService().
+                        addJar(idRepo,
+                        pathJar,
+                        nameJar,
+                        ju.getSize(), ju.getLastModif());
+                List<String> clazz = ju.getClassInside();
+                System.out.println("[addRepo]\t\t Total de clases encontradas " + clazz.size());
+                System.out.println("[addRepo]\n");
+                // se graban las clases
+                DemiurgoFacade.getInstance().getService().
+                        addClass(idRepo,
+                        pathJar,
+                        nameJar,
+                        clazz);
+            } else {
+                System.out.println("[addRepo]\t\t El jar indicado no se pudo procesar. Cero clases agregadas.");
+            }
         }
+        ju = null;
         System.out.println("[addRepo] ");
         System.out.println("[addRepo] RESUMEN:");
         System.out.println("[addRepo] La ruta: " + dir + " ha sido agregada como repositorio.");
-        System.out.println("[addRepo] Total de JARs encontrados:"+jarsPath.size());
+        System.out.println("[addRepo] Total de JARs encontrados:" + jarsPath.size());
         System.out.println("[addRepo] Ahora puedes identificarla con el numero:" + idRepo);
         System.out.println("[addRepo] ");
         System.out.println("[addRepo] Puedes ver la lista completa de repositorios con <<showRepos>>");
@@ -168,7 +171,7 @@ public class ConsoleUtil {
                     System.out.println("[" + type + "]  Busqueda Terminada. Resultados: " + r.length);
                     if (r.length > 0) {
                         System.out.println("[" + type + "]  Se muestran unicamente los primeros " + resultSize + " resultados.");
-                        int max = resultSize>r.length?r.length:resultSize;
+                        int max = resultSize > r.length ? r.length : resultSize;
                         for (int i = 0; i < max; i++) {
                             System.out.print("[" + type + "] {" + (i + 1) + "}");
                             Object[] o = ((IArray) r[i]).toArray();
@@ -303,9 +306,9 @@ public class ConsoleUtil {
         System.out.println("[status]Carpeta de almacenamiento (user.home)........:" + FileUtil.getWorkDirectory());
         System.out.println("[status]Total de Repositorios........................:"
                 + DemiurgoFacade.getInstance().getService().getListRepo().size());
-        System.out.println("[status]Espacio en disco utilizado hasta el momento..:" + 
-           Math.ceil(( (FileUtil.getSizeDirectory(FileUtil.getWorkDirectory()))/1024)/1024)
-                +" Mb");
+        System.out.println("[status]Espacio en disco utilizado hasta el momento..:"
+                + Math.ceil(((FileUtil.getSizeDirectory(FileUtil.getWorkDirectory())) / 1024) / 1024)
+                + " Mb");
 
         System.out.println("[status]----------------------------------------------------");
     }
@@ -327,18 +330,18 @@ public class ConsoleUtil {
             }
             System.out.println("[showRepos]  ==============================================================");
         }
-        if(FileUtil.existGradleDirectory()||FileUtil.existIvyDirectory()||FileUtil.existMaven2Directory()){
+        if (FileUtil.existGradleDirectory() || FileUtil.existIvyDirectory() || FileUtil.existMaven2Directory()) {
             System.out.println("[showRepos]  --------------------------------------------------------------");
             System.out.println("[showRepos]  Los siguientes directorios pueden tener jars:");
-            if(FileUtil.existGradleDirectory()){
-                System.out.println("[showRepos] \t GRADLE.......:"+FileUtil.getGradleDirectory());
+            if (FileUtil.existGradleDirectory()) {
+                System.out.println("[showRepos] \t GRADLE.......:" + FileUtil.getGradleDirectory());
             }
-            if(FileUtil.existIvyDirectory()){
-                System.out.println("[showRepos] \t IVY .........:"+FileUtil.getIvyDirectory());
-            }   
-            if(FileUtil.existMaven2Directory()){
-                System.out.println("[showRepos] \t MAVEN .......:"+FileUtil.getMaven2Directory());
-            }            
+            if (FileUtil.existIvyDirectory()) {
+                System.out.println("[showRepos] \t IVY .........:" + FileUtil.getIvyDirectory());
+            }
+            if (FileUtil.existMaven2Directory()) {
+                System.out.println("[showRepos] \t MAVEN .......:" + FileUtil.getMaven2Directory());
+            }
         }
         System.out.println("[showRepos]  --------------------------------------------------------------");
     }
@@ -364,7 +367,7 @@ public class ConsoleUtil {
         public void run() {
             while (buscando) {
                 try {
-                    System.out.println("."); 
+                    System.out.println(".");
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ConsoleUtil.class.getName()).log(Level.SEVERE, null, ex);
@@ -373,18 +376,17 @@ public class ConsoleUtil {
         }
     }
     //---
-    
-	public void help() {             
-		System.out.println("help                - Show help");
-		System.out.println("status              - Muestra informacion relevante sobre jarhalla-local.");
-                System.out.println("addRepo             - Agrega un directorio como repositorio.");
-                System.out.println("showRepos           - Muestra los repositorios disponibles.");
-                System.out.println("deleteRepo          - Elimina un repositorio. Util para reindexar un directorio.");
-		System.out.println("resultSize          - Define la cantidad minima de resultados a mostrar por cada busqueda.");
-                System.out.println("searchJar           - Realiza busquedas de jars en alguno de los repositorios.");
-                System.out.println("searchClass         - Realiza busquedas de Clases en alguno de los repositorios.");
-		System.out.println("exit                - Exit the app");
 
-	}
-    
+    public void help() {
+        System.out.println("help                - Show help");
+        System.out.println("status              - Muestra informacion relevante sobre jarhalla-local.");
+        System.out.println("addRepo             - Agrega un directorio como repositorio.");
+        System.out.println("showRepos           - Muestra los repositorios disponibles.");
+        System.out.println("deleteRepo          - Elimina un repositorio. Util para reindexar un directorio.");
+        System.out.println("resultSize          - Define la cantidad minima de resultados a mostrar por cada busqueda.");
+        System.out.println("searchJar           - Realiza busquedas de jars en alguno de los repositorios.");
+        System.out.println("searchClass         - Realiza busquedas de Clases en alguno de los repositorios.");
+        System.out.println("exit                - Exit the app");
+
+    }
 }
