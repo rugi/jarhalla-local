@@ -113,6 +113,7 @@ public class ConsoleUtil {
             } else {
                 System.out.println("[addRepo]\t\t El jar indicado no se pudo procesar. Cero clases agregadas.");
             }
+            ju.clear();
         }
         ju = null;
         System.out.println("[addRepo] ");

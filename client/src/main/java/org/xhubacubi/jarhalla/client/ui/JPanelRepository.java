@@ -409,7 +409,8 @@ public final class JPanelRepository extends JPanel {
                         }else{
                             log.append("\t\t El archivo no pudo ser procesado. Cero Clases agregadas.");
                         }
-                        progress.setValue(k);                        
+                        progress.setValue(k);         
+                        ju.clear();
                     }
                     ju = null;
                     log.append("Analisis concluido");
