@@ -137,10 +137,12 @@ public class JViewManifest extends JPanel {
                                 row[1] = at.getValue(res2.toString());
                                 modeloGrid.addRow(row);
                                 k++;
-                            }
-                        }
+                            }//while next
+                        }//while                        
                     }//if . manifest
                 }// if valid
+                j.clear();
+                j = null;
                 status.setText(k + " propiedades encontradas.");
             } catch (IOException ex) {
                 System.out.println("Excepcion JViewManifest " + ex);
