@@ -21,14 +21,7 @@ import org.xhubacubi.jarhalla.client.cli.util.ConsoleUtil;
 public class Shell {
 	private String[] commandsList;
         private ConsoleUtil console ;
-        
-        
-
-        
-        public void addRepo(String path){
-            //validad que sea directorio
-            
-        }
+                     
 	public void init() {
 		commandsList = new String[] { "help" ,"showRepos", "status", "searchJar", "searchClass", "addRepo","deleteRepo", "resultSize" ,"exit" };
                 console = new ConsoleUtil();
