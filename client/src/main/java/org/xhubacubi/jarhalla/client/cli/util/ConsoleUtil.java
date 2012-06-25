@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xhubacubi.alicante.core.SearchFilesUtil;
@@ -314,6 +315,48 @@ public class ConsoleUtil {
         System.out.println("[status]----------------------------------------------------");
     }
 
+    public void showManifestJar(String command) {
+        System.out.println("[showManifestJar]  --------------------------------------------------------------");
+        String[] tokens = command.split("\\s+");
+        String pathJar = null;
+        //si es un solo token mostramos ayuda
+        if (tokens.length == 1) {
+            System.out.println("[showManifestJar]showManifestJar:");
+            System.out.println("[showManifestJar]           Muestra el contenido del manifest del archivo indicado.");
+            System.out.println("[showManifestJar]                  showManifestJar <jarPath>");
+            System.out.println("[showManifestJar]Donde: ");
+            System.out.println("[showManifestJar]           <jarPath> Es la ruta completa al jar.");
+            System.out.println("[showManifestJar]           ");
+            System.out.println("[showManifestJar]----------------------------------------------------");
+            return;
+        }
+        if (tokens.length > 2) {
+            System.out.println("[showManifestJar]Se recibieron mas parametros de los necesarios. ");
+            System.out.println("[showManifestJar]Se toma el requerido y se ignora el resto ");
+        }
+        pathJar = tokens[1];
+        boolean isFile = new File(pathJar).isFile();
+        boolean exist = new File(pathJar).exists();
+        if (isFile && exist) {
+            System.out.println("[showManifestJar]    Mostrando informacion de: " + pathJar);
+            JarUtil j = new JarUtil(pathJar);
+            Map<String, String> mnf = j.getManifestContentInMap();
+            Iterator iterator1 = mnf.keySet().iterator();
+            StringBuilder key = new StringBuilder();
+            StringBuilder content = new StringBuilder();
+            while (iterator1.hasNext()) {
+                key.delete(0, key.length());
+                content.delete(0, content.length());
+                key.append(iterator1.next().toString());
+                content.append(mnf.get(key.toString()));
+                System.out.println("[showManifestJar]      "+key.toString() + "\t \t" + content.toString());
+            }
+        } else {
+            System.out.println("[showManifestJar]  El parametro de entrada indicado no hace referencia a un archivo jar válido:" + pathJar);
+        }
+        System.out.println("[showManifestJar]----------------------------------------------------");
+    }
+
     public void showRepos() {
         System.out.println("[showRepos]  --------------------------------------------------------------");
         int k = DemiurgoFacade.getInstance().getService().getListRepo().size();
@@ -383,6 +426,7 @@ public class ConsoleUtil {
         System.out.println("status              - Muestra informacion relevante sobre jarhalla-local.");
         System.out.println("addRepo             - Agrega un directorio como repositorio.");
         System.out.println("showRepos           - Muestra los repositorios disponibles.");
+        System.out.println("showManifestJar     - Muestra el contenido del MANIFEST del archivo jar.");
         System.out.println("deleteRepo          - Elimina un repositorio. Util para reindexar un directorio.");
         System.out.println("resultSize          - Define la cantidad minima de resultados a mostrar por cada busqueda.");
         System.out.println("searchJar           - Realiza busquedas de jars en alguno de los repositorios.");

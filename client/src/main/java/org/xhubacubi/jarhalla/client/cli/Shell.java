@@ -23,7 +23,7 @@ public class Shell {
         private ConsoleUtil console ;
                      
 	public void init() {
-		commandsList = new String[] { "help" ,"showRepos", "status", "searchJar", "searchClass", "addRepo","deleteRepo", "resultSize" ,"exit" };
+		commandsList = new String[] { "help" ,"showRepos", "showManifestJar", "status", "searchJar", "searchClass", "addRepo","deleteRepo", "resultSize" ,"exit" };
                 console = new ConsoleUtil();
 	}
 
@@ -56,6 +56,8 @@ public class Shell {
 				console.status();
 			} else if ("showRepos".equals(line)) {
 				console.showRepos();
+			} else if (line.toLowerCase().startsWith("showmanifestjar")) {
+				console.showManifestJar(line);
 			} else if ("exit".equals(line)) {
 				System.out.println("Exiting application");
 				return;

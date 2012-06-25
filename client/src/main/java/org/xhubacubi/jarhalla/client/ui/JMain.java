@@ -301,12 +301,9 @@ public class JMain extends JFrame {
         }
 
         @Override
-        public void valueChanged(ListSelectionEvent e) {
-            System.out.println("Linea seleccionada." + grid.getSelectedRow());
+        public void valueChanged(ListSelectionEvent e) {            
             if (grid.getSelectedRow() >= 0) {
                 int fila = grid.getSelectedRow();
-                //System.out.println("Ruta:" + grid.getModel().getValueAt(fila, 0));
-                //System.out.println("Nombre del jar:" + grid.getModel().getValueAt(fila, 1));
                 viewManifest.updateData(grid.getModel().getValueAt(fila, 0).toString()+
                          grid.getModel().getValueAt(fila, 1).toString());
             }

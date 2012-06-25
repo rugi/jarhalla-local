@@ -112,39 +112,31 @@ public class JViewManifest extends JPanel {
 
         @Override
         public void run() {
-            try {
+            try {                
                 cleanGrid();
                 int k = 0;
                 JarUtil j = new JarUtil(path);
                 if (j.isValid()) {
-                    Manifest m = j.getManifest();
-                    if (m != null) {
-                        Map map = m.getEntries();
-                        Iterator it = map.keySet().iterator();
-                        StringBuilder res = new StringBuilder();
-                        StringBuilder res2 = new StringBuilder();
-                        while (it.hasNext()) {
-                            res.delete(0, res.length());
-                            res.append(it.next());
-                            Attributes at = (Attributes) map.get(res.toString());
-                            Iterator llavesAt = at.keySet().iterator();
-                            while (llavesAt.hasNext()) {
-                                res2.delete(0, res2.length());
-                                res2.append(llavesAt.next());
-                                //TODO meter un StringBuilder
-                                Object[] row = new Object[2];
-                                row[0] = "[" + res.toString().toUpperCase() + "]: " + res2.toString();
-                                row[1] = at.getValue(res2.toString());
-                                modeloGrid.addRow(row);
-                                k++;
-                            }//while next
-                        }//while                        
-                    }//if . manifest
+                    Map<String, String> mnf = j.getManifestContentInMap();
+                    Iterator iterator1 = mnf.keySet().iterator();
+                    StringBuilder key = new StringBuilder();
+                    StringBuilder content = new StringBuilder();
+                    while (iterator1.hasNext()) {
+                        key.delete(0, key.length());
+                        content.delete(0, content.length());
+                        key.append(iterator1.next().toString());
+                        content.append(mnf.get(key.toString()));
+                        Object[] row = new Object[2];
+                        row[0] = key.toString();
+                        row[1] = content.toString();
+                        modeloGrid.addRow(row);
+                        k++;
+                    }                    
                 }// if valid
                 j.clear();
                 j = null;
                 status.setText(k + " propiedades encontradas.");
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 System.out.println("Excepcion JViewManifest " + ex);
             }
             //TODO limpiar objetos
